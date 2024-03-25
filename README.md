@@ -10,9 +10,6 @@ Este é um projeto para uma aplicação de gestão de contribuintes, onde você 
 - PostgreSQL
 - Docker
 
-## Execução com Docker Compose
- utilize o comando: ```docker compose up --build```
-
 # Configuração e Execução
 
 Clone o repositório: ``` git clone https://github.com/Projeto-previdencia-privada/Gestao-Contribuintes ```
@@ -21,7 +18,10 @@ Importe o projeto em sua IDE de preferência.
 
 Certifique-se de ter o Maven configurado em seu ambiente.
 
-Execute a aplicação. Isso pode ser feito executando a classe principal GestaoContribuintesApplication.java ou via linha de comando:
+Execute a aplicação. Isso pode ser feito executando a classe principal GestaoContribuintesApplication.java ou via linha de comando.
+
+## Execução com Docker Compose
+ utilize o comando: ```docker compose up --build```
 
 # Endpoints da API
 
