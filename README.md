@@ -36,19 +36,16 @@ Execute a aplicação. Isso pode ser feito executando a classe principal GestaoC
 
 Endpoint: http://localhost:8080/contribuintes
 ```
-{
-    "cpf": "00565454522",
-    "nomeCivil": "Catarina Constantine Araujo",
-    "nomeSocial": "Catarina Constantine",
-    "salario": 35000.00,
-    "inicioContribuicao": "2029-03-07",
-    "enderecos": [],
-    "telefones": [],
-    "emails": [],
-    "categoria": {
-        "id": 1
-    },
-    "responsavelDe": [],
-    "dependenteDe": []
-}
+    {
+        "categoria": "MEI",
+        "inicio_contribuicao": "25/03/2012",
+        "dependentes": [],
+        "cpf": "05264444888",
+        "nome_civil": "Maria de Fatima de Oliveira",
+        "endereco": "Quadra 22 Lote 9 casa 1002, MT",
+        "nome_social": "Maria de Fatima",
+        "email": "mariafatima@hotmail.com",
+        "telefone": "28996663225",
+        "salario": 1000.00
+    }
 ```
