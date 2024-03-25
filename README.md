@@ -1,25 +1,23 @@
 # Gestão de Contribuintes
 Este é um projeto de exemplo para uma aplicação de gestão de contribuintes, onde você pode cadastrar, atualizar, listar e desativar contribuintes.
 
-# Tecnologias Utilizadas
-Java
-Spring Boot
-Spring Data JPA
-Hibernate
-PostgreSQL (ou o banco de dados de sua preferência)
-Configuração do Banco de Dados
-Certifique-se de ter um servidor PostgreSQL em execução e atualize as configurações de banco de dados no arquivo application.properties.
+## Tecnologias Utilizadas
 
-# properties
-Copy code
+- Java
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- PostgreSQL (ou o banco de dados de sua preferência)
+
+## properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/gestao_contribuintes
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
-Configuração e Execução
-Clone o repositório:
-bash
-Copy code
-git clone https://github.com/Projeto-previdencia-privada/Gestao-Contribuintes
+
+# Configuração e Execução
+
+Clone o repositório: git clone https://github.com/Projeto-previdencia-privada/Gestao-Contribuintes
+
 Importe o projeto em sua IDE de preferência.
 
 Certifique-se de ter o Maven configurado em seu ambiente.
@@ -41,8 +39,6 @@ DELETE /contribuintes/{cpf}: Desativa um contribuinte existente.
 
 Endpoint: http://localhost:8080/contribuintes
 
-json
-Copy code
 {
     "cpf": "00565454522",
     "nomeCivil": "Catarina Constantine Araujo",
@@ -58,6 +54,7 @@ Copy code
     "responsavelDe": [],
     "dependenteDe": []
 }
+
 
 # Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests ou abrir issues se você encontrar algum problema.
