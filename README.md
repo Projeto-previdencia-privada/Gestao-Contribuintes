@@ -1,4 +1,4 @@
-## Gestão de Contribuintes
+# Gestão de Contribuintes
 Este é um projeto de exemplo para uma aplicação de gestão de contribuintes, onde você pode cadastrar, atualizar, listar e desativar contribuintes.
 
 # Tecnologias Utilizadas
