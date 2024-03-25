@@ -15,7 +15,7 @@ public class Responsavel {
 
     private String nome;
 
-    //Getters e Setters
+    // Getters e Setters
     public String getCPF() {
         return CPF;
     }
@@ -32,6 +32,4 @@ public class Responsavel {
         this.nome = nome;
     }
 
-    
 }
-

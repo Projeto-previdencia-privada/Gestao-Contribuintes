@@ -7,9 +7,9 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "Categoria")
+@Table(name = "Categoria")
 public class Categoria {
-    
+
     @Id
     private String descricao;
 
@@ -17,7 +17,7 @@ public class Categoria {
     @JoinColumn(name = "CPF_contribuinte")
     private Contribuintes contribuinte;
 
-    //Getters e Setters
+    // Getters e Setters
     public String getDescricao() {
         return descricao;
     }

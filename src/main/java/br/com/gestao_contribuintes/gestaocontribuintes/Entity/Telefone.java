@@ -7,11 +7,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "Telefone")
+@Table(name = "Telefone")
 public class Telefone {
-    
+
     @Id
-    private String cpf; 
+    private String cpf;
 
     @ManyToOne
     @JoinColumn(name = "cpf_contribuinte")
@@ -20,17 +20,19 @@ public class Telefone {
     private String Numero;
     private String Tipo;
 
-    //Getters e Setters
+    // Getters e Setters
     public String getCpf() {
         return cpf;
     }
+
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
+
     public String getNumero() {
         return Numero;
     }
+
     public void setNumero(String numero) {
         Numero = numero;
     }
@@ -38,6 +40,7 @@ public class Telefone {
     public String getTipo() {
         return Tipo;
     }
+
     public void setTipo(String tipo) {
         Tipo = tipo;
     }
@@ -45,6 +48,7 @@ public class Telefone {
     public Contribuintes getContribuinte() {
         return contribuinte;
     }
+
     public void setContribuinte(Contribuintes contribuinte) {
         this.contribuinte = contribuinte;
     }

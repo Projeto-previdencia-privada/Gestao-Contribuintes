@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+//import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +15,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name= "contribuintes")
+@Table(name = "contribuintes")
 public class Contribuintes {
-    
+
     @Id
     @Column(name = "CPF")
     private String CPF;
@@ -37,73 +38,92 @@ public class Contribuintes {
     private LocalDate inicio_contribuicao;
 
     @OneToMany(mappedBy = "contribuinte")
+    @JsonIgnore
     private List<Filiacao> dependentes;
-    
-    //Getters e Setters
+
+    // Getters e Setters
     public void setDependentes(List<Filiacao> dependentes) {
         this.dependentes = dependentes;
     }
+
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
+
     public LocalDate getInicio_contribuicao() {
         return inicio_contribuicao;
     }
+
     public void setInicio_contribuicao(LocalDate inicio_contribuicao) {
         this.inicio_contribuicao = inicio_contribuicao;
     }
+
     public List<Filiacao> getDependentes() {
         return dependentes;
     }
+
     public String getCPF() {
         return CPF;
     }
+
     public void setCPF(String cPF) {
         CPF = cPF;
     }
+
     public String getNome_civil() {
         return Nome_civil;
     }
+
     public void setNome_civil(String nome_civil) {
         Nome_civil = nome_civil;
     }
+
     public String getNome_social() {
         return Nome_social;
     }
+
     public void setNome_social(String nome_social) {
         Nome_social = nome_social;
     }
+
     public String getEndereco() {
         return Endereco;
     }
+
     public void setEndereco(String endereco) {
         Endereco = endereco;
     }
+
     public String getEmail() {
         return Email;
     }
+
     public void setEmail(String email) {
         Email = email;
     }
+
     public BigDecimal getSalario() {
         return Salario;
     }
+
     public void setSalario(BigDecimal salario) {
         Salario = salario;
     }
+
     public String getCategoria() {
         return Categoria;
     }
+
     public void setCategoria(String categoria) {
         Categoria = categoria;
     }
-    
+
     public String getTelefone() {
         return Telefone;
     }
+
     public void setTelefone(String telefone) {
         Telefone = telefone;
     }
-        
+
 }
