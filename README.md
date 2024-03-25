@@ -1,5 +1,5 @@
 # Gestão de Contribuintes
-Este é um projeto de exemplo para uma aplicação de gestão de contribuintes, onde você pode cadastrar, atualizar, listar e desativar contribuintes.
+Este é um projeto para uma aplicação de gestão de contribuintes, onde você pode cadastrar, atualizar, listar e desativar contribuintes.
 
 ## Tecnologias Utilizadas
 
@@ -52,6 +52,3 @@ Endpoint: http://localhost:8080/contribuintes
     "dependenteDe": []
 }
 ```
-
-# Contribuições
-Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests ou abrir issues se você encontrar algum problema.
