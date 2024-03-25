@@ -30,15 +30,15 @@ mvn spring-boot:run
 A aplicação estará disponível em http://localhost:8080.
 
 # Endpoints da API
-GET /contribuintes: Retorna todos os contribuintes cadastrados.
-POST /contribuintes: Cadastra um novo contribuinte.
-PUT /contribuintes/{cpf}: Atualiza os dados de um contribuinte existente.
-DELETE /contribuintes/{cpf}: Desativa um contribuinte existente.
+- GET /contribuintes: Retorna todos os contribuintes cadastrados.
+- POST /contribuintes: Cadastra um novo contribuinte.
+- PUT /contribuintes/{cpf}: Atualiza os dados de um contribuinte existente.
+- DELETE /contribuintes/{cpf}: Desativa um contribuinte existente.
 
 # Exemplo de Requisição POST
 
 Endpoint: http://localhost:8080/contribuintes
-
+```
 {
     "cpf": "00565454522",
     "nomeCivil": "Catarina Constantine Araujo",
@@ -54,7 +54,7 @@ Endpoint: http://localhost:8080/contribuintes
     "responsavelDe": [],
     "dependenteDe": []
 }
-
+```
 
 # Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests ou abrir issues se você encontrar algum problema.
