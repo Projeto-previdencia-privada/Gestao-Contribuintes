@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
+import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Filiacao;
 import br.com.gestao_contribuintes.gestaocontribuintes.Service.ContribuintesService;
 
@@ -34,21 +35,14 @@ public class ContribuintesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdContribuintes);
     }
 
-    @PostMapping("/{cpf}/dependentes") // Endpoint para cadastrar dependentes
-    public ResponseEntity<Filiacao> cadastrarDependente(@PathVariable String cpf, @RequestBody Filiacao dependente) {
-        // Verifica se o CPF fornecido corresponde a um contribuinte existente
-        if (!contribuintesService.existsByCPF(cpf)) {
-            return ResponseEntity.notFound().build(); // Retorna 404 caso não exista contribuinte com o CPF fornecido
+    @PostMapping("/{cpf}/dependentes")
+    public ResponseEntity<Contribuintes> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
+        try {
+            Contribuintes contribuinte = contribuintesService.addDependente(cpf, dependente);
+            return ResponseEntity.ok(contribuinte);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
-
-        // Define o CPF do contribuinte associado ao dependente
-        dependente.setCPF(cpf);
-
-        // Realiza o cadastro do dependente
-        Filiacao novoDependente = contribuintesService.cadastrarDependente(cpf, dependente);
-
-        // Retorna o dependente cadastrado junto com o código de status apropriado
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoDependente);
     }
 
     @GetMapping
@@ -58,17 +52,13 @@ public class ContribuintesController {
     }
 
     @GetMapping("/{cpf}/dependentes")
-    public ResponseEntity<List<Filiacao>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
-        // Verifica se o CPF fornecido corresponde a um contribuinte existente
-        if (!contribuintesService.existsByCPF(cpf)) {
-            return ResponseEntity.notFound().build(); // Retorna 404 caso não exista contribuinte com o CPF fornecido
+    public ResponseEntity<List<Dependentes>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
+        try {
+            List<Dependentes> dependentes = contribuintesService.getDependentesByContribuinteCPF(cpf);
+            return ResponseEntity.ok(dependentes);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
-
-        // Obtém a lista de dependentes associados ao contribuinte com o CPF fornecido
-        List<Filiacao> dependentes = contribuintesService.getDependentesByContribuinteCPF(cpf);
-
-        // Retorna a lista de dependentes junto com o código de status apropriado
-        return ResponseEntity.ok(dependentes);
     }
 
     @PutMapping("/{cpf}")

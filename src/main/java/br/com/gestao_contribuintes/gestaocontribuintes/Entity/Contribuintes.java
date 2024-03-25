@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-//import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -37,30 +37,10 @@ public class Contribuintes {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate inicio_contribuicao;
 
-    @OneToMany(mappedBy = "contribuinte")
-    @JsonIgnore
-    private List<Filiacao> dependentes;
+    @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Dependentes> dependentes;
 
     // Getters e Setters
-    public void setDependentes(List<Filiacao> dependentes) {
-        this.dependentes = dependentes;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    public LocalDate getInicio_contribuicao() {
-        return inicio_contribuicao;
-    }
-
-    public void setInicio_contribuicao(LocalDate inicio_contribuicao) {
-        this.inicio_contribuicao = inicio_contribuicao;
-    }
-
-    public List<Filiacao> getDependentes() {
-        return dependentes;
-    }
 
     public String getCPF() {
         return CPF;
@@ -124,6 +104,22 @@ public class Contribuintes {
 
     public void setTelefone(String telefone) {
         Telefone = telefone;
+    }
+
+    public LocalDate getInicio_contribuicao() {
+        return inicio_contribuicao;
+    }
+
+    public void setInicio_contribuicao(LocalDate inicio_contribuicao) {
+        this.inicio_contribuicao = inicio_contribuicao;
+    }
+
+    public List<Dependentes> getDependentes() {
+        return dependentes;
+    }
+
+    public void setDependentes(List<Dependentes> dependentes) {
+        this.dependentes = dependentes;
     }
 
 }

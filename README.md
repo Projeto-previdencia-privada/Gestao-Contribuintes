@@ -7,13 +7,12 @@ Este é um projeto para uma aplicação de gestão de contribuintes, onde você 
 - Spring Boot
 - Spring Data JPA
 - Hibernate
-- PostgreSQL 
+- PostgreSQL
+- Docker
 
-## Properties
-
-- spring.datasource.url=jdbc:postgresql://localhost:5432/gestao_contribuintes
-- spring.datasource.username=seu_usuario
-- spring.datasource.password=sua_senha
+## Execução com Docker Compose
+``` utilize o comando:```
+  docker compose up --build
 
 # Configuração e Execução
 
