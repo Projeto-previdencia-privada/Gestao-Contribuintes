@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 public class Endereco {
     
     @Id
-    private String CPF; // Alteração do tipo de identificador para String (CPF)
+    private String CPF; 
 
     private String Logradouro;
     private String Numero;
@@ -19,6 +19,7 @@ public class Endereco {
     private String Estado;
     private String CEP;
     
+    //Getters e Setters
     public String getCPF() {
         return CPF;
     }

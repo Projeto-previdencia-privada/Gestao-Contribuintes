@@ -15,22 +15,23 @@ public class Filiacao {
     @Id
     private String CPF;
 
-    public String getCPF() {
-        return CPF;
-    }
-    public void setCPF(String cPF) {
-        CPF = cPF;
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CPF_responsavel")
     private Contribuintes contribuinte;
-
+    
+    //Getters e Setters
     public Contribuintes getContribuinte() {
         return contribuinte;
     }
     public void setContribuinte(Contribuintes contribuinte) {
         this.contribuinte = contribuinte;
+    }
+    
+    public String getCPF() {
+        return CPF;
+    }
+    public void setCPF(String cPF) {
+        CPF = cPF;
     }
 }
 

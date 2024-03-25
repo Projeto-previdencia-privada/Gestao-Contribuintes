@@ -17,6 +17,7 @@ public class Categoria {
     @JoinColumn(name = "CPF_contribuinte")
     private Contribuintes contribuinte;
 
+    //Getters e Setters
     public String getDescricao() {
         return descricao;
     }

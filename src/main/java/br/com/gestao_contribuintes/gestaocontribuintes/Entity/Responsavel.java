@@ -15,6 +15,7 @@ public class Responsavel {
 
     private String nome;
 
+    //Getters e Setters
     public String getCPF() {
         return CPF;
     }

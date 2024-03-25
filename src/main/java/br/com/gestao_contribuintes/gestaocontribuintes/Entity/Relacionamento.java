@@ -6,6 +6,7 @@ public class Relacionamento {
     private Contribuintes contribuinte;
     private Contribuintes dependente;
     
+    //Getters e Setters
     public TipoRelacionamento getTipo() {
         return tipo;
     }

@@ -10,7 +10,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-//import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -18,6 +17,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name= "contribuintes")
 public class Contribuintes {
+    
     @Id
     @Column(name = "CPF")
     private String CPF;
@@ -30,7 +30,6 @@ public class Contribuintes {
     private String Categoria;
     private String Telefone;
 
-        
     @OneToOne(mappedBy = "contribuinte")
     private Categoria categoria;
 
@@ -40,15 +39,10 @@ public class Contribuintes {
     @OneToMany(mappedBy = "contribuinte")
     private List<Filiacao> dependentes;
     
-    
-    public List<Filiacao> getDependentes() {
-        return dependentes;
-    }
-
+    //Getters e Setters
     public void setDependentes(List<Filiacao> dependentes) {
         this.dependentes = dependentes;
     }
-
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
@@ -58,6 +52,9 @@ public class Contribuintes {
     }
     public void setInicio_contribuicao(LocalDate inicio_contribuicao) {
         this.inicio_contribuicao = inicio_contribuicao;
+    }
+    public List<Filiacao> getDependentes() {
+        return dependentes;
     }
     public String getCPF() {
         return CPF;
@@ -108,13 +105,5 @@ public class Contribuintes {
     public void setTelefone(String telefone) {
         Telefone = telefone;
     }
-    /* 
-    public List<Filiacao> getDependentes() {
-        return dependentes;
-    }
-    public void setDependentes(List<Filiacao> dependentes) {
-        this.dependentes = dependentes;
-    }
-    */
-    
+        
 }

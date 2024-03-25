@@ -11,23 +11,30 @@ import jakarta.persistence.Table;
 public class Telefone {
     
     @Id
-    private String cpf; // Alteração do tipo de identificador para String (CPF)
+    private String cpf; 
+
+    @ManyToOne
+    @JoinColumn(name = "cpf_contribuinte")
+    private Contribuintes contribuinte;
 
     private String Numero;
     private String Tipo;
-    
+
+    //Getters e Setters
     public String getCpf() {
         return cpf;
     }
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+    
     public String getNumero() {
         return Numero;
     }
     public void setNumero(String numero) {
         Numero = numero;
     }
+
     public String getTipo() {
         return Tipo;
     }
@@ -35,14 +42,9 @@ public class Telefone {
         Tipo = tipo;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "cpf_contribuinte")
-    private Contribuintes contribuinte;
-
     public Contribuintes getContribuinte() {
         return contribuinte;
     }
-
     public void setContribuinte(Contribuintes contribuinte) {
         this.contribuinte = contribuinte;
     }
