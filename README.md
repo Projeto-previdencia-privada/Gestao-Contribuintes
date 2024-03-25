@@ -25,10 +25,6 @@ Certifique-se de ter o Maven configurado em seu ambiente.
 
 Execute a aplicação. Isso pode ser feito executando a classe principal GestaoContribuintesApplication.java ou via linha de comando:
 
-## mvn spring-boot:run
-
-A aplicação estará disponível em http://localhost:8080.
-
 # Endpoints da API
 
 - GET /contribuintes: Retorna todos os contribuintes cadastrados.
