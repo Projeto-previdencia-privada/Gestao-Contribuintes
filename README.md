@@ -11,8 +11,7 @@ Este é um projeto para uma aplicação de gestão de contribuintes, onde você 
 - Docker
 
 ## Execução com Docker Compose
-``` utilize o comando:```
-  docker compose up --build
+ utilize o comando: ```docker compose up --build```
 
 # Configuração e Execução
 
