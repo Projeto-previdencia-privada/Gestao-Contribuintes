@@ -7,7 +7,7 @@ Este é um projeto de exemplo para uma aplicação de gestão de contribuintes, 
 - Spring Boot
 - Spring Data JPA
 - Hibernate
-- PostgreSQL (ou o banco de dados de sua preferência)
+- PostgreSQL 
 
 ## Properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/gestao_contribuintes
