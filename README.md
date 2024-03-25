@@ -9,7 +9,7 @@ Este é um projeto de exemplo para uma aplicação de gestão de contribuintes, 
 - Hibernate
 - PostgreSQL (ou o banco de dados de sua preferência)
 
-## properties
+## Properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/gestao_contribuintes
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
@@ -24,8 +24,7 @@ Certifique-se de ter o Maven configurado em seu ambiente.
 
 Execute a aplicação. Isso pode ser feito executando a classe principal GestaoContribuintesApplication.java ou via linha de comando:
 
-
-mvn spring-boot:run
+## mvn spring-boot:run
 
 A aplicação estará disponível em http://localhost:8080.
 
