@@ -24,7 +24,12 @@ public class ContribuintesService {
     }
 
     public Contribuintes create(Contribuintes contribuintes) {
-        return contribuintesRepository.save(contribuintes);
+        if (contribuintes != null) {
+            return contribuintesRepository.save(contribuintes);
+        } else {
+            //  exceção indicando que o argumento é inválido (nulo)
+            throw new IllegalArgumentException("O objeto 'contribuintes' não pode ser nulo");
+        }
     }
 
     public List<Contribuintes> getAllContribuintes() {
@@ -47,31 +52,45 @@ public class ContribuintesService {
     }
 
     public Contribuintes addDependente(String cpfContribuinte, Dependentes dependente) {
-        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpfContribuinte);
-        if (contribuinteOptional.isEmpty()) {
-            throw new IllegalArgumentException("O contribuinte com o CPF " + cpfContribuinte + " não foi encontrado.");
+        // Verifica se o CPF do contribuinte não é nulo
+        if (cpfContribuinte != null) {
+            Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpfContribuinte);
+            if (contribuinteOptional.isEmpty()) {
+                throw new IllegalArgumentException("O contribuinte com o CPF " + cpfContribuinte + " não foi encontrado.");
+            }
+    
+            Contribuintes contribuinte = contribuinteOptional.get();
+            List<Dependentes> dependentes = contribuinte.getDependentes();
+    
+            // Definindo o relacionamento bidirecional
+            dependente.setResponsavel(contribuinte);
+            dependentes.add(dependente);
+            contribuinte.setDependentes(dependentes);
+    
+            return contribuintesRepository.save(contribuinte);
+        } else {
+            // exceção indicando que o CPF do contribuinte é inválido (nulo)
+            throw new IllegalArgumentException("O CPF do contribuinte não pode ser nulo.");
         }
-
-        Contribuintes contribuinte = contribuinteOptional.get();
-        List<Dependentes> dependentes = contribuinte.getDependentes();
-
-        // Definindo o relacionamento bidirecional
-        dependente.setResponsavel(contribuinte);
-        dependentes.add(dependente);
-        contribuinte.setDependentes(dependentes);
-
-        return contribuintesRepository.save(contribuinte);
     }
+    
 
     public boolean existsByCPF(String cpf) {
         return contribuintesRepository.existsByCPF(cpf);
     }
 
     public List<Dependentes> getDependentesByContribuinteCPF(String cpf) {
-        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
-        if (contribuinteOptional.isEmpty()) {
-            throw new IllegalArgumentException("O contribuinte com o CPF " + cpf + " não foi encontrado.");
+        // Verifica se o CPF do contribuinte não é nulo
+        if (cpf != null) {
+            Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
+            if (contribuinteOptional.isEmpty()) {
+                throw new IllegalArgumentException("O contribuinte com o CPF " + cpf + " não foi encontrado.");
+            }
+            return contribuinteOptional.get().getDependentes();
+        } else {
+            // exceção indicando que o CPF do contribuinte é inválido (nulo)
+            throw new IllegalArgumentException("O CPF do contribuinte não pode ser nulo.");
         }
-        return contribuinteOptional.get().getDependentes();
     }
+    
 }
