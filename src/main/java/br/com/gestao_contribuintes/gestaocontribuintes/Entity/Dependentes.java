@@ -1,5 +1,7 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -15,6 +17,7 @@ public class Dependentes {
     private String nome;
 
     @ManyToOne
+    @JsonBackReference
     private Contribuintes responsavel;
 
     public String getCPF() {

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
-import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Filiacao;
+//import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Filiacao;
 import br.com.gestao_contribuintes.gestaocontribuintes.Service.ContribuintesService;
 
 @RestController

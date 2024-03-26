@@ -54,6 +54,9 @@ public class ContribuintesService {
 
         Contribuintes contribuinte = contribuinteOptional.get();
         List<Dependentes> dependentes = contribuinte.getDependentes();
+
+        // Definindo o relacionamento bidirecional
+        dependente.setResponsavel(contribuinte);
         dependentes.add(dependente);
         contribuinte.setDependentes(dependentes);
 
