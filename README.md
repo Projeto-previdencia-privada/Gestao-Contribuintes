@@ -47,3 +47,27 @@ Endpoint: http://localhost:8080/contribuintes
         "salario": 1000.00
     }
 ```
+
+# Requisição POST para Adicionar Dependente:
+Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
+
+```POST http://localhost:8080/contribuintes/{cpf_contribuinte}/dependentes```
+
+Substitua {cpf_contribuinte} pelo CPF do contribuinte ao qual você deseja adicionar o dependente.
+
+## Corpo da Requisição (JSON):
+```
+{
+    "cpf": "CPF_do_Dependente",
+    "nome": "Nome_do_Dependente"
+}
+```
+
+Exemplo de Corpo da Requisição:
+
+# Requisição GET para Obter Dependentes de um Contribuinte:
+Para obter a lista de dependentes de um contribuinte, você pode fazer uma requisição GET para a seguinte URL:
+
+```GET http://localhost:8080/contribuintes/{cpf_contribuinte}/dependentes```
+
+Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
