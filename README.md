@@ -32,7 +32,8 @@ Execute a aplicação. Isso pode ser feito executando a classe principal GestaoC
 
 # Exemplo de Requisição POST
 
-Endpoint: http://localhost:8080/contribuintes
+Endpoint: ```http://localhost:8080/contribuintes```
+
 ```
     {
         "categoria": "MEI",
