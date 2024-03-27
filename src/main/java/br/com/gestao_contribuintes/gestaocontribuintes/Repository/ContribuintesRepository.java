@@ -21,4 +21,3 @@ public interface ContribuintesRepository extends JpaRepository<Contribuintes, St
     List<Dependentes> findDependentesByCPF(String cpf);
 
 }
-

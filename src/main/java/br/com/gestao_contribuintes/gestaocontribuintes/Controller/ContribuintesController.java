@@ -85,4 +85,14 @@ public class ContribuintesController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{cpf}/arvoreGenealogica/{profundidade}")
+    public ResponseEntity<List<Contribuintes>> getArvoreGenealogica(@PathVariable String cpf, @PathVariable int profundidade) {
+        try {
+            List<Contribuintes> arvoreGenealogica = contribuintesService.getArvoreGenealogica(cpf, profundidade);
+            return ResponseEntity.ok(arvoreGenealogica);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
