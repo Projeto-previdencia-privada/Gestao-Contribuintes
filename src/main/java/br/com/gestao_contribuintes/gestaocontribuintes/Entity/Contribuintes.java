@@ -1,6 +1,5 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -38,7 +37,7 @@ public class Contribuintes {
     // Adicionado para representar os dependentes
     @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
-    private List<Dependentes> responsavel;
+    private List<Dependentes> dependentes;
 
     private String tipoRelacionamento;
     private String cpfPai;
@@ -161,11 +160,11 @@ public class Contribuintes {
     }
 
     public List<Dependentes> getDependentes() {
-        return responsavel;
+        return dependentes;
     }
 
     public void setDependentes(List<Dependentes> dependentes) {
-        this.responsavel = dependentes;
+        this.dependentes = dependentes;
     }
 
 }
