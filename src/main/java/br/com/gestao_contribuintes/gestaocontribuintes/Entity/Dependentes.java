@@ -1,11 +1,13 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.List;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-//import jakarta.persistence.Enumerated;
-//import jakarta.persistence.EnumType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -17,12 +19,23 @@ public class Dependentes {
     private String CPF;
     private String nomeCivil;
 
-    // @Enumerated(EnumType.STRING)
-    private TipoRelacionamento tipoRelacionamento;
+    @ManyToMany(mappedBy = "dependentes")
+    @JsonIgnore
+    private List<Contribuintes> contribuintes;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnore
     private Contribuintes responsavel;
+
+    private TipoRelacionamento tipoRelacionamento;
+
+    public List<Contribuintes> getContribuintes() {
+        return contribuintes;
+    }
+
+    public void setContribuintes(List<Contribuintes> contribuintes) {
+        this.contribuintes = contribuintes;
+    }
 
     public String getCPF() {
         return CPF;
@@ -55,4 +68,5 @@ public class Dependentes {
     public void setResponsavel(Contribuintes responsavel) {
         this.responsavel = responsavel;
     }
+
 }

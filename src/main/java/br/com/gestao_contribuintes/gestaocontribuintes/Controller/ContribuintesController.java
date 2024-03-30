@@ -1,7 +1,6 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,6 @@ public class ContribuintesController {
         this.contribuintesService = contribuintesService;
     }
 
-        //Contribuintes
     @PostMapping
     public ResponseEntity<Contribuintes> create(@RequestBody Contribuintes contribuintes) {
         Contribuintes createdContribuintes = contribuintesService.create(contribuintes);
@@ -40,20 +38,16 @@ public class ContribuintesController {
         List<Contribuintes> contribuintesList = contribuintesService.getAllContribuintes();
         return ResponseEntity.ok(contribuintesList);
     }
-    
+
     @PutMapping("/{cpf}")
     public ResponseEntity<Contribuintes> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
-        // Verifica se o CPF do caminho corresponde ao CPF do objeto
         if (!cpf.equals(contribuintes.getCPF())) {
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<Contribuintes> updatedContribuintes = contribuintesService.update(contribuintes);
-        if (updatedContribuintes.isPresent()) {
-            return ResponseEntity.ok(updatedContribuintes.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return contribuintesService.update(contribuintes)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{cpf}")
@@ -66,7 +60,17 @@ public class ContribuintesController {
         }
     }
 
-    // Dependentes
+    @GetMapping("/familia/{cpf}")
+    public ResponseEntity<List<Contribuintes>> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
+        try {
+            List<Contribuintes> familia = contribuintesService.getFamiliaByContribuinteCPF(cpf);
+            return ResponseEntity.ok(familia);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+        // DEPENDENTES
     @GetMapping("/{cpf}/dependentes")
     public ResponseEntity<List<Dependentes>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
         try {
@@ -87,15 +91,4 @@ public class ContribuintesController {
         }
     }
 
-    //Árvore Genealógica
-    @GetMapping("/{cpf}/arvoreGenealogica/{profundidade}")
-    public ResponseEntity<List<Contribuintes>> getArvoreGenealogica(@PathVariable String cpf,
-            @PathVariable int profundidade) {
-        try {
-            List<Contribuintes> arvoreGenealogica = contribuintesService.getArvoreGenealogica(cpf, profundidade);
-            return ResponseEntity.ok(arvoreGenealogica);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

@@ -1,15 +1,17 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,7 +23,6 @@ public class Contribuintes {
     @Id
     @Column(name = "CPF")
     private String CPF;
-
     private String nomeCivil;
     private String nomeSocial;
     private String endereco;
@@ -34,18 +35,27 @@ public class Contribuintes {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate inicioContribuicao;
 
-    // Adicionado para representar os dependentes
-    @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<Dependentes> dependentes;
-
     private String tipoRelacionamento;
     private String cpfPai;
     private String cpfMae;
     private String cpfAvô;
     private String cpfAvó;
+    private String conjuge;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
+    @JsonManagedReference
+    private List<Dependentes> dependentes;
 
     // Getters e Setters
+
+    public List<Dependentes> getDependentes() {
+        return dependentes;
+    }
+
+    public void setDependentes(List<Dependentes> dependentes) {
+        this.dependentes = dependentes;
+    }
 
     public String getTipoRelacionamento() {
         return tipoRelacionamento;
@@ -143,6 +153,14 @@ public class Contribuintes {
         this.categoria = categoria;
     }
 
+    public String getconjuge() {
+        return conjuge;
+    }
+
+    public void setconjuge(String conjuge) {
+        this.conjuge = conjuge;
+    }
+
     public String getTelefone() {
         return telefone;
     }
@@ -157,14 +175,6 @@ public class Contribuintes {
 
     public void setInicioContribuicao(LocalDate inicioContribuicao) {
         this.inicioContribuicao = inicioContribuicao;
-    }
-
-    public List<Dependentes> getDependentes() {
-        return dependentes;
-    }
-
-    public void setDependentes(List<Dependentes> dependentes) {
-        this.dependentes = dependentes;
     }
 
 }

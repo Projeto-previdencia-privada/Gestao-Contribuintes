@@ -1,37 +1,27 @@
-version: '3.8'
+version: "3"
 
 services:
-  gestao-contribuintes-api:
-    image: gestao-contribuintes-api
-    container_name: meu-container
-    ports:
-      - "8080:8080"
+  local-postgres-compose:
+    image: postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/contribuintes
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postsenha
-    depends_on:
-      - postgres
-    networks:
-      - backend
-
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    environment:
-      - POSTGRES_DB=contribuintes
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postsenha
+      POSTGRES_PASSWORD: "postsenha"
     ports:
-      - "5432:5432"
+      - "7777:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres-data:/var/lib/postgresql/data
     networks:
-      - backend
+      - postgres-compose-network
+  
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "6666:8080"
+    networks:
+      - postgres-compose-network
 
 networks:
-  backend:
-
-volumes:
-  postgres_data:
+  postgres-compose-network:
+    driver: bridge

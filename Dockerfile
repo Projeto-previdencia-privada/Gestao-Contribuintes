@@ -1,23 +1,11 @@
-# Use uma imagem base com o Java e Maven instalados
-FROM maven:3.6.3-openjdk-11-slim AS build
+# Use a imagem base com o Java 17 Alpine
+FROM openjdk:17-alpine
 
-# Copie o código-fonte para o contêiner
-COPY . /app
+# Copie o artefato JAR da sua aplicação para a imagem
+COPY target/*.jar /app/gestaocontribuintes.jar
 
-# Defina o diretório de trabalho como a pasta raiz da aplicação
-WORKDIR /app
+# Exponha a porta da sua aplicação
+EXPOSE 6666
 
-# Compile a aplicação
-RUN mvn clean package
-
-# Imagem de destino para a aplicação
-FROM openjdk:11-jre-slim
-
-# Copie o artefato construído para a imagem
-COPY target/*.jar /app/gestao-contribuintes.jar
-
-# Exponha a porta da aplicação
-EXPOSE 8080
-
-# Comando para iniciar a aplicação quando o contêiner for iniciado
-CMD ["java", "-jar", "/app/gestao-contribuintes.jar"]
+# Comando para iniciar a sua aplicação quando o contêiner for iniciado
+CMD ["java", "-jar", "/app/gestaocontribuintes.jar"]
