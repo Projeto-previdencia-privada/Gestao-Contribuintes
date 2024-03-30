@@ -1,27 +1,25 @@
-version: "3"
-
 services:
-  local-postgres-compose:
-    image: postgres
+  db:
+    image: postgres:16
+    container_name: gestao_contribuintes_db
     environment:
-      POSTGRES_PASSWORD: "postsenha"
+      POSTGRES_DB: contribuintes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postsenha
     ports:
       - "7777:5432"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./postgres-data:/var/lib/postgresql/data
-    networks:
-      - postgres-compose-network
-  
   app:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    build: .
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/contribuintes
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postsenha
     ports:
       - "6666:8080"
-    networks:
-      - postgres-compose-network
-
-networks:
-  postgres-compose-network:
-    driver: bridge
+volumes:
+  postgres-data:

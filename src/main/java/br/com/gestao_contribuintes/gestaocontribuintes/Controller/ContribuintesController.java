@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,12 +62,8 @@ public class ContribuintesController {
 
     @GetMapping("/familia/{cpf}")
     public ResponseEntity<List<Contribuintes>> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
-        try {
-            List<Contribuintes> familia = contribuintesService.getFamiliaByContribuinteCPF(cpf);
-            return ResponseEntity.ok(familia);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        List<Contribuintes> familia = contribuintesService.getFamiliaByContribuinteCPF(cpf);
+        return ResponseEntity.ok(familia);
     }
 
         // DEPENDENTES

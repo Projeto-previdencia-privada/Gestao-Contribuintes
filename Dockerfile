@@ -1,11 +1,10 @@
 # Use a imagem base com o Java 17 Alpine
 FROM openjdk:17-alpine
 
-# Copie o artefato JAR da sua aplicação para a imagem
-COPY target/*.jar /app/gestaocontribuintes.jar
+# Definir argumento com o caminho do arquivo .jar
+ARG JAR_FILE=target/gestao-contribuintes-0.0.1-SNAPSHOT.jar
 
-# Exponha a porta da sua aplicação
-EXPOSE 6666
+# Copiar o arquivo .jar para o container
+COPY ${JAR_FILE} app.jar
 
-# Comando para iniciar a sua aplicação quando o contêiner for iniciado
-CMD ["java", "-jar", "/app/gestaocontribuintes.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]

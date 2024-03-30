@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Repository.ContribuintesRepository;
@@ -70,39 +71,28 @@ public class ContribuintesService {
     }
 
     public List<Contribuintes> getFamiliaByContribuinteCPF(String cpf) {
-        if (cpf != null) {
-            Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
-            if (contribuinteOptional.isEmpty()) {
-                throw new IllegalArgumentException("O contribuinte com o CPF " + cpf + " não foi encontrado.");
-            }
-            Contribuintes contribuinte = contribuinteOptional.get();
-
+        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
+        
+        return contribuinteOptional.map(contribuinte -> {
             List<Contribuintes> familia = new ArrayList<>();
             familia.add(contribuinte);
-
+            
             List<Dependentes> dependentes = contribuinte.getDependentes();
             if (dependentes != null && !dependentes.isEmpty()) {
-                for (Dependentes dependente : dependentes) {
+                dependentes.forEach(dependente -> {
                     Contribuintes responsavel = dependente.getResponsavel();
                     if (responsavel != null && !familia.contains(responsavel)) {
                         familia.add(responsavel);
-                        // Verifica se o responsável tem filhos e os adiciona à família
-                        List<Dependentes> filhosDoResponsavel = responsavel.getDependentes();
-                        if (filhosDoResponsavel != null && !filhosDoResponsavel.isEmpty()) {
-                            for (Dependentes filho : filhosDoResponsavel) {
-                                if (!familia.contains(filho.getResponsavel())) {
-                                    familia.add(filho.getResponsavel());
-                                }
-                            }
-                        }
+                        familia.addAll(responsavel.getDependentes().stream()
+                                .map(Dependentes::getResponsavel)
+                                .filter(filho -> !familia.contains(filho))
+                                .collect(Collectors.toList()));
                     }
-                }
+                });
             }
-
+            
             return familia;
-        } else {
-            throw new IllegalArgumentException("O CPF do contribuinte não pode ser nulo.");
-        }
+        }).orElseThrow(() -> new IllegalArgumentException("O contribuinte com o CPF " + cpf + " não foi encontrado."));
     }
 
     public List<Dependentes> getDependentesByContribuinteCPF(String cpf) {

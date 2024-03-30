@@ -153,11 +153,11 @@ public class Contribuintes {
         this.categoria = categoria;
     }
 
-    public String getconjuge() {
+    public String getConjuge() {
         return conjuge;
     }
-
-    public void setconjuge(String conjuge) {
+    
+    public void setConjuge(String conjuge) {
         this.conjuge = conjuge;
     }
 
