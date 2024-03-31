@@ -10,7 +10,6 @@ services:
       - "7777:5432"
     volumes:
       - ./init-script:/docker-entrypoint-initdb.d/init.sql
-      - ./postgres-data:/var/lib/postgresql/data
   app:
     build: .
     depends_on:
