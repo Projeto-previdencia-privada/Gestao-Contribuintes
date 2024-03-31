@@ -91,7 +91,6 @@ public class ContribuintesService {
                 });
             }
             
-            
             return familia;
         }).orElseThrow(() -> new IllegalArgumentException("O contribuinte com o CPF " + cpf + " não foi encontrado."));
     }
