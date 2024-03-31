@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
@@ -72,11 +73,11 @@ public class ContribuintesService {
 
     public List<Contribuintes> getFamiliaByContribuinteCPF(String cpf) {
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
-        
+
         return contribuinteOptional.map(contribuinte -> {
             List<Contribuintes> familia = new ArrayList<>();
             familia.add(contribuinte);
-            
+
             List<Dependentes> dependentes = contribuinte.getDependentes();
             if (dependentes != null && !dependentes.isEmpty()) {
                 dependentes.forEach(dependente -> {
@@ -90,7 +91,7 @@ public class ContribuintesService {
                     }
                 });
             }
-            
+
             return familia;
         }).orElseThrow(() -> new IllegalArgumentException("O contribuinte com o CPF " + cpf + " não foi encontrado."));
     }
