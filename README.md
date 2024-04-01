@@ -54,8 +54,6 @@ Para obter a lista de contribuintes, você pode fazer uma requisição GET para 
 
 ```GET http://localhost:8080/contribuintes```
 
-Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
-
 # Requisição POST para Adicionar Dependente:
 Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
 
