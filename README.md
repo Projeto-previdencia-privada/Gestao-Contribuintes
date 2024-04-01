@@ -30,7 +30,7 @@ Execute a aplicação. Isso pode ser feito executando a classe principal GestaoC
 - PUT /contribuintes/{cpf}: Atualiza os dados de um contribuinte existente.
 - DELETE /contribuintes/{cpf}: Desativa um contribuinte existente.
 
-# Exemplo de Requisição POST
+# Exemplo de Requisição POST para adicionar contribuintes:
 
 Endpoint: ```http://localhost:8080/contribuintes```
 
@@ -48,6 +48,13 @@ Endpoint: ```http://localhost:8080/contribuintes```
         "salario": 1000.00
     }
 ```
+
+# Requisição GET para Obter Contribuinte:
+Para obter a lista de contribuintes, você pode fazer uma requisição GET para a seguinte URL:
+
+```GET http://localhost:8080/contribuintes```
+
+Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
 
 # Requisição POST para Adicionar Dependente:
 Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
@@ -72,3 +79,10 @@ Para obter a lista de dependentes de um contribuinte, você pode fazer uma requi
 ```GET http://localhost:8080/contribuintes/{cpf_contribuinte}/dependentes```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
+
+# Requisição GET para Obter a familia do Contribuinte:
+Para obter a lista da árvore genealógica de um contribuintes, você pode fazer uma requisição GET para a seguinte URL:
+
+```GET http://localhost:8080/contribuintes/familia/{cpf}```
+
+Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os familiares.
