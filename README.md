@@ -34,7 +34,7 @@ Execute a aplicação. Isso pode ser feito executando a classe principal GestaoC
 # Requisição GET para Obter Contribuinte:
 Para obter a lista de contribuintes, você pode fazer uma requisição GET para a seguinte URL:
 
-```GET http://localhost:8081/contribuintes```: Retorna os contribuintes cadastrados.
+Endpoint: ```http://localhost:8081/contribuintes```: Retorna os contribuintes cadastrados.
 
 # Exemplo de Requisição POST para adicionar contribuintes:
 
