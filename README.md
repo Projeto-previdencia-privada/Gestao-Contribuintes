@@ -62,7 +62,8 @@ Endpoint: ```http://localhost:8081/contribuintes```
 
 ## Requisiçao GET para obter informações pertinentes a contribuição do Contribuintes
 
-``` GET /contribuinte/{cpf_contribuinte}```: Retorna as informações do contribuinte pertinentes a contribuição
+Endpoint: ```http://localhost:8081/contribuinte/{cpf_contribuinte}```
+Retorna as informações do contribuinte pertinentes a contribuição
 
 # Exemplo de requisição GET para as informações do contribuinte
 
@@ -80,7 +81,7 @@ Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}```
 - GET /contribuintes/{cpf_contribuinte}/dependentes: Retorna os dependentes do contribuinte.
 - POST /contribuintes/{cpf_contribuinte}/dependentes: Cadastra um novo dependente ao contribuinte.
 
-# Requisição POST para Adicionar Dependente:
+# Requisição POST para adicionar Dependente:
 Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
 
 ```POST http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
@@ -97,20 +98,16 @@ Substitua {cpf_contribuinte} pelo CPF do contribuinte ao qual você deseja adici
 
 Exemplo de Corpo da Requisição:
 
-# Requisição GET para Obter Dependentes de um Contribuinte:
+# Requisição GET para obter Dependentes de um Contribuinte:
 Para obter a lista de dependentes de um contribuinte, você pode fazer uma requisição GET para a seguinte URL:
 
-```GET http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
+Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
-
-# Familia
-
-- GET /contribuintes/familia/{cpf do contribuinte}: Retorna uma arvore genealogica, apresentando os familiares do contribuinte.
 
 # Requisição GET para Obter a familia do Contribuinte:
 Para obter a lista da árvore genealógica de um contribuintes, você pode fazer uma requisição GET para a seguinte URL:
 
-```GET http://localhost:8081/contribuintes/familia/{cpf}```
+Endpoint: ```http://localhost:8081/contribuintes/familia/{cpf_contribuinte}```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os familiares.
