@@ -47,6 +47,12 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.4.0</version>
 		</dependency>
+
+		<!-- Dependência do Jackson JSON para conversão de objetos Java em JSON -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -57,5 +63,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

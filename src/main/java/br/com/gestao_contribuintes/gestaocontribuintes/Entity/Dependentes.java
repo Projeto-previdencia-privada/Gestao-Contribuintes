@@ -2,8 +2,8 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
 import java.util.List;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Dependentes")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cpf")
 public class Dependentes {
 
     @Id
@@ -20,11 +21,9 @@ public class Dependentes {
     private String nomeCivil;
 
     @ManyToMany(mappedBy = "dependentes")
-    @JsonIgnore
     private List<Contribuintes> contribuintes;
 
     @ManyToOne
-    @JsonIgnore
     private Contribuintes responsavel;
 
     private TipoRelacionamento tipoRelacionamento;

@@ -1,7 +1,8 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "contribuintes")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cpf")
 public class Contribuintes {
 
     @Id
@@ -40,14 +42,22 @@ public class Contribuintes {
     private String cpfMae;
     private String cpfAvô;
     private String cpfAvó;
-    private String conjuge;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
-    @JsonManagedReference
     private List<Dependentes> dependentes;
 
+    private String cpfConjuge;
+
     // Getters e Setters
+
+    public String getCpfConjuge() {
+        return cpfConjuge;
+    }
+
+    public void setCpfConjuge(String cpfConjuge) {
+        this.cpfConjuge = cpfConjuge;
+    }
 
     public List<Dependentes> getDependentes() {
         return dependentes;
@@ -151,14 +161,6 @@ public class Contribuintes {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
-    }
-
-    public String getConjuge() {
-        return conjuge;
-    }
-    
-    public void setConjuge(String conjuge) {
-        this.conjuge = conjuge;
     }
 
     public String getTelefone() {

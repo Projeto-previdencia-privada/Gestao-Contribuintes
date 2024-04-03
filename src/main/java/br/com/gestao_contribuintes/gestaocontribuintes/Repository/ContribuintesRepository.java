@@ -3,6 +3,7 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
@@ -19,5 +20,8 @@ public interface ContribuintesRepository extends JpaRepository<Contribuintes, St
 
     // Método para buscar dependentes de um contribuinte pelo CPF
     List<Dependentes> findDependentesByCPF(String cpf);
+
+    @Query("SELECT c FROM Contribuintes c")
+    List<Contribuintes> findAllContribuintesWithoutDependentes();
 
 }

@@ -12,16 +12,14 @@ CREATE TABLE contribuintes (
     cpf_pai VARCHAR(11),
     cpf_mae VARCHAR(11),
     cpf_avô VARCHAR(11),
-    cpf_avó VARCHAR(11)
+    cpf_avó VARCHAR(11),
+    cpf_conjuge VARCHAR(11)
 );
 
--- Criação da tabela de dependentes
+-- Criação da tabela de dependente
 CREATE TABLE dependentes (
     cpf VARCHAR(11) PRIMARY KEY,  -- Chave primária definida como CPF
-    nome VARCHAR(100),
-    data_nascimento DATE,
-    responsavel_id VARCHAR(11),  -- chave estrangeira referenciando a tabela de contribuintes
-    FOREIGN KEY (responsavel_id) REFERENCES contribuintes(cpf)
+    nome VARCHAR(100)
 );
 
 -- Criação da tabela de junção
@@ -31,4 +29,13 @@ CREATE TABLE contribuintes_dependentes (
     PRIMARY KEY (cpf_contribuinte, cpf_dependente),
     FOREIGN KEY (cpf_contribuinte) REFERENCES contribuintes(cpf),
     FOREIGN KEY (cpf_dependente) REFERENCES dependentes(cpf)
+);
+
+-- Criação da tabela de contribuintes_conjuges
+CREATE TABLE contribuintes_conjuges (
+    cpf_contribuinte VARCHAR(11),
+    cpf_conjuge VARCHAR(11),
+    PRIMARY KEY (cpf_contribuinte, cpf_conjuge),
+    FOREIGN KEY (cpf_contribuinte) REFERENCES contribuintes(cpf),
+    FOREIGN KEY (cpf_conjuge) REFERENCES contribuintes(cpf)
 );

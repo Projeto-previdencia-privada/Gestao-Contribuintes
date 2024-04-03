@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Repository.ContribuintesRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ContribuintesService {
@@ -28,7 +29,9 @@ public class ContribuintesService {
     }
 
     public List<Contribuintes> getAllContribuintes() {
-        return contribuintesRepository.findAll();
+        List<Contribuintes> contribuintesList = contribuintesRepository.findAll();
+        contribuintesList.forEach(contribuinte -> contribuinte.setDependentes(null)); // Define os dependentes como null
+        return contribuintesList;
     }
 
     public Optional<Contribuintes> update(Contribuintes contribuintes) {
@@ -38,6 +41,18 @@ public class ContribuintesService {
         return Optional.of(contribuintesRepository.save(contribuintes));
     }
 
+    public Optional<Contribuintes> updateCpfConjuge(String cpfContribuinte, String cpfConjuge) {
+        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpfContribuinte);
+        if (contribuinteOptional.isPresent()) {
+            Contribuintes contribuinte = contribuinteOptional.get();
+            contribuinte.setCpfConjuge(cpfConjuge);
+            return Optional.of(contribuintesRepository.save(contribuinte));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
     public boolean delete(String cpf) {
         if (cpf != null && contribuintesRepository.existsByCPF(cpf)) {
             contribuintesRepository.deleteByCPF(cpf);
@@ -72,24 +87,39 @@ public class ContribuintesService {
     }
 
     public List<Contribuintes> getFamiliaByContribuinteCPF(String cpf) {
+        // Busca o contribuinte pelo CPF fornecido
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
 
+        // Verifica se o contribuinte foi encontrado
         return contribuinteOptional.map(contribuinte -> {
             List<Contribuintes> familia = new ArrayList<>();
             familia.add(contribuinte);
 
+            // Obtém o CPF do cônjuge do contribuinte
+            String cpfConjuge = contribuinte.getCpfConjuge();
+
+            // Se o contribuinte tiver um cônjuge, adiciona o cônjuge à lista da família
+            if (cpfConjuge != null) {
+                Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjuge);
+                conjugeOptional.ifPresent(familia::add);
+            }
+
+            // Obtém a lista de dependentes do contribuinte
             List<Dependentes> dependentes = contribuinte.getDependentes();
+
+            // Se o contribuinte tiver dependentes, adiciona os dependentes à lista da
+            // família
             if (dependentes != null && !dependentes.isEmpty()) {
-                dependentes.forEach(dependente -> {
-                    Contribuintes responsavel = dependente.getResponsavel();
-                    if (responsavel != null && !familia.contains(responsavel)) {
-                        familia.add(responsavel);
-                        familia.addAll(responsavel.getDependentes().stream()
-                                .map(Dependentes::getResponsavel)
-                                .filter(filho -> !familia.contains(filho))
-                                .collect(Collectors.toList()));
-                    }
-                });
+                List<Contribuintes> dependentesComoContribuintes = dependentes.stream()
+                        .map(dependente -> {
+                            Contribuintes contribuinteDependente = new Contribuintes();
+                            contribuinteDependente.setNomeCivil(dependente.getnomeCivil());
+                            contribuinteDependente.setCPF(dependente.getCPF());
+                            // Se houver necessidade de mais atributos, defina-os aqui
+                            return contribuinteDependente;
+                        })
+                        .collect(Collectors.toList());
+                familia.addAll(dependentesComoContribuintes);
             }
 
             return familia;
