@@ -84,7 +84,7 @@ Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}```
 # Requisição POST para adicionar Dependente:
 Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
 
-```POST http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
+Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte ao qual você deseja adicionar o dependente.
 
