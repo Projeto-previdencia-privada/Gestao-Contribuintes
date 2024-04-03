@@ -1,3 +1,4 @@
+br\com\gestao_contribuintes\gestaocontribuintes\DTO\ContribuintesInfo.class
 br\com\gestao_contribuintes\gestaocontribuintes\Controller\ContribuintesController.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Contribuintes.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Dependentes.class
