@@ -9,6 +9,7 @@ Este é um projeto para uma aplicação de gestão de contribuintes, onde você 
 - Hibernate
 - PostgreSQL
 - Docker
+- Swagger
 
 # Configuração e Execução
 
@@ -30,34 +31,63 @@ Execute a aplicação. Isso pode ser feito executando a classe principal GestaoC
 - PUT /contribuintes/{cpf}: Atualiza os dados de um contribuinte existente.
 - DELETE /contribuintes/{cpf}: Desativa um contribuinte existente.
 
+## Contribuintes
+
+    - GET /contribuinte/{cpf_contribuinte}: Retorna as informações do contribuinte pertinentes a contribuição
+
+# Exemplo de requisição GET para as informações do contribuinte
+
+Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}```
+
+```
+        "inicioContribuicao": "01/07/2006"
+        "salario": 10000.00,
+        "categoria": "MEI",
+        "cpf": "11122233302"
+```
+
+## Dependentes
+
+- GET /contribuintes/{cpf_contribuinte}/dependentes: Retorna os dependentes do contribuinte.
+- POST /contribuintes/{cpf_contribuinte}/dependentes: Cadastra um novo dependente ao contribuinte.
+
+## Familia
+
+- GET /contribuintes/familia/{cpf do contribuinte}: Retorna uma arvore genealogica, apresentando os familiares do contribuinte.
+
 # Exemplo de Requisição POST para adicionar contribuintes:
 
-Endpoint: ```http://localhost:8080/contribuintes```
+Endpoint: ```http://localhost:8081/contribuintes```
 
 ```
     {
+        "nomeCivil": "Emmanuel da Costa",
+        "nomeSocial": "Emmanuel",
+        "endereco": "Rua sem nome, Casa 10, bairro nobre, RJ",
+        "email": "emmanuel@costa.com",
+        "salario": 10000.00,
         "categoria": "MEI",
-        "inicio_contribuicao": "25/03/2012",
-        "dependentes": [],
-        "cpf": "05264444888",
-        "nome_civil": "Maria de Fatima de Oliveira",
-        "endereco": "Quadra 22 Lote 9 casa 1002, MT",
-        "nome_social": "Maria de Fatima",
-        "email": "mariafatima@hotmail.com",
-        "telefone": "28996663225",
-        "salario": 1000.00
+        "telefone": "21985246666",
+        "inicioContribuicao": "01/07/2006",
+        "tipoRelacionamento": null,
+        "cpfPai": "11122233304",
+        "cpfMae": "11122233305",
+        "cpfAvô": null,
+        "cpfAvó": null,
+        "cpfconjuge": "11122233303",
+        "cpf": "11122233302"
     }
 ```
 
 # Requisição GET para Obter Contribuinte:
 Para obter a lista de contribuintes, você pode fazer uma requisição GET para a seguinte URL:
 
-```GET http://localhost:8080/contribuintes```
+```GET http://localhost:8081/contribuintes```
 
 # Requisição POST para Adicionar Dependente:
 Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
 
-```POST http://localhost:8080/contribuintes/{cpf_contribuinte}/dependentes```
+```POST http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte ao qual você deseja adicionar o dependente.
 
@@ -74,13 +104,13 @@ Exemplo de Corpo da Requisição:
 # Requisição GET para Obter Dependentes de um Contribuinte:
 Para obter a lista de dependentes de um contribuinte, você pode fazer uma requisição GET para a seguinte URL:
 
-```GET http://localhost:8080/contribuintes/{cpf_contribuinte}/dependentes```
+```GET http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
 
 # Requisição GET para Obter a familia do Contribuinte:
 Para obter a lista da árvore genealógica de um contribuintes, você pode fazer uma requisição GET para a seguinte URL:
 
-```GET http://localhost:8080/contribuintes/familia/{cpf}```
+```GET http://localhost:8081/contribuintes/familia/{cpf}```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os familiares.
