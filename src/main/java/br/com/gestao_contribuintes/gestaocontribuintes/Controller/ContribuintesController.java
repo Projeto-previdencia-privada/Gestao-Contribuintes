@@ -2,6 +2,7 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.gestao_contribuintes.gestaocontribuintes.DTO.ContribuintesInfo;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
+
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
+
 import br.com.gestao_contribuintes.gestaocontribuintes.Service.ContribuintesService;
 
 @RestController
@@ -41,6 +45,25 @@ public class ContribuintesController {
     public ResponseEntity<List<Contribuintes>> list() {
         List<Contribuintes> contribuintesList = contribuintesService.getAllContribuintes();
         return ResponseEntity.ok(contribuintesList);
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<ContribuintesInfo> getContribuinteInfoByCPF(@PathVariable String cpf) {
+        // Busca o contribuinte pelo CPF fornecido
+        Optional<Contribuintes> contribuinteOptional = contribuintesService.getContribuinteByCPF(cpf);
+
+        // Verifica se o contribuinte foi encontrado
+        return contribuinteOptional.map(contribuinte -> {
+            // Cria um DTO para armazenar os dados do contribuinte
+            ContribuintesInfo ContribuintesInfo = new ContribuintesInfo();
+            ContribuintesInfo.setCPF(contribuinte.getCPF());
+            ContribuintesInfo.setSalario(contribuinte.getSalario());
+            ContribuintesInfo.setInicioContribuicao(contribuinte.getInicioContribuicao());
+            ContribuintesInfo.setCategoria(contribuinte.getCategoria());
+
+            // Retorna os dados do contribuinte
+            return ResponseEntity.ok(ContribuintesInfo);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{cpf}")

@@ -20,6 +20,10 @@ public class ContribuintesService {
         this.contribuintesRepository = contribuintesRepository;
     }
 
+    public Optional<Contribuintes> getContribuinteByCPF(String cpf) {
+        return contribuintesRepository.findById(cpf);
+    }
+
     public Contribuintes create(Contribuintes contribuintes) {
         if (contribuintes != null) {
             return contribuintesRepository.save(contribuintes);
