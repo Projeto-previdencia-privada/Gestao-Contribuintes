@@ -31,29 +31,10 @@ Execute a aplicação. Isso pode ser feito executando a classe principal GestaoC
 - PUT /contribuintes/{cpf}: Atualiza os dados de um contribuinte existente.
 - DELETE /contribuintes/{cpf}: Desativa um contribuinte existente.
 
-## Contribuintes
+# Requisição GET para Obter Contribuinte:
+Para obter a lista de contribuintes, você pode fazer uma requisição GET para a seguinte URL:
 
-    - GET /contribuinte/{cpf_contribuinte}: Retorna as informações do contribuinte pertinentes a contribuição
-
-# Exemplo de requisição GET para as informações do contribuinte
-
-Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}```
-
-```
-        "inicioContribuicao": "01/07/2006"
-        "salario": 10000.00,
-        "categoria": "MEI",
-        "cpf": "11122233302"
-```
-
-## Dependentes
-
-- GET /contribuintes/{cpf_contribuinte}/dependentes: Retorna os dependentes do contribuinte.
-- POST /contribuintes/{cpf_contribuinte}/dependentes: Cadastra um novo dependente ao contribuinte.
-
-## Familia
-
-- GET /contribuintes/familia/{cpf do contribuinte}: Retorna uma arvore genealogica, apresentando os familiares do contribuinte.
+```GET http://localhost:8081/contribuintes```: Retorna os contribuintes cadastrados.
 
 # Exemplo de Requisição POST para adicionar contribuintes:
 
@@ -79,10 +60,25 @@ Endpoint: ```http://localhost:8081/contribuintes```
     }
 ```
 
-# Requisição GET para Obter Contribuinte:
-Para obter a lista de contribuintes, você pode fazer uma requisição GET para a seguinte URL:
+## Requisiçao GET para obter informações pertinentes a contribuição do Contribuintes
 
-```GET http://localhost:8081/contribuintes```
+``` GET /contribuinte/{cpf_contribuinte}```: Retorna as informações do contribuinte pertinentes a contribuição
+
+# Exemplo de requisição GET para as informações do contribuinte
+
+Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}```
+
+```
+        "inicioContribuicao": "01/07/2006"
+        "salario": 10000.00,
+        "categoria": "MEI",
+        "cpf": "11122233302"
+```
+
+# Dependentes
+
+- GET /contribuintes/{cpf_contribuinte}/dependentes: Retorna os dependentes do contribuinte.
+- POST /contribuintes/{cpf_contribuinte}/dependentes: Cadastra um novo dependente ao contribuinte.
 
 # Requisição POST para Adicionar Dependente:
 Para adicionar um novo dependente a um contribuinte existente, você pode fazer uma requisição POST para a seguinte URL:
@@ -107,6 +103,10 @@ Para obter a lista de dependentes de um contribuinte, você pode fazer uma requi
 ```GET http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
+
+# Familia
+
+- GET /contribuintes/familia/{cpf do contribuinte}: Retorna uma arvore genealogica, apresentando os familiares do contribuinte.
 
 # Requisição GET para Obter a familia do Contribuinte:
 Para obter a lista da árvore genealógica de um contribuintes, você pode fazer uma requisição GET para a seguinte URL:
