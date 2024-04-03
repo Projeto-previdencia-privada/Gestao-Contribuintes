@@ -65,7 +65,7 @@ Endpoint: ```http://localhost:8081/contribuintes```
 Endpoint: ```http://localhost:8081/contribuinte/{cpf_contribuinte}```
 Retorna as informações do contribuinte pertinentes a contribuição
 
-# Exemplo de requisição GET para as informações do contribuinte
+# Exemplo de requisição GET com as informações do contribuinte
 
 Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}```
 
