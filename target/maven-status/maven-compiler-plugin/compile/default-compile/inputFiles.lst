@@ -2,7 +2,9 @@ C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Entity\Dependentes.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Controller\ContribuintesController.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\GestaoContribuintesApplication.java
+C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\DTO\DependentesDTO.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Entity\TipoRelacionamento.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Entity\Relacionamento.java
+C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\DTO\FamiliaDTO.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Entity\Contribuintes.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Repository\ContribuintesRepository.java

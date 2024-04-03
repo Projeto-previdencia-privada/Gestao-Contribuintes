@@ -2,7 +2,9 @@ br\com\gestao_contribuintes\gestaocontribuintes\Controller\ContribuintesControll
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Contribuintes.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Dependentes.class
 br\com\gestao_contribuintes\gestaocontribuintes\Service\ContribuintesService.class
+br\com\gestao_contribuintes\gestaocontribuintes\DTO\DependentesDTO.class
 br\com\gestao_contribuintes\gestaocontribuintes\GestaoContribuintesApplication.class
+br\com\gestao_contribuintes\gestaocontribuintes\DTO\FamiliaDTO.class
 br\com\gestao_contribuintes\gestaocontribuintes\Repository\ContribuintesRepository.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Relacionamento.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\TipoRelacionamento.class
