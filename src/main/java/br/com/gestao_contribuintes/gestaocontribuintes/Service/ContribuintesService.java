@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
+import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Repository.ContribuintesRepository;
@@ -161,5 +163,43 @@ public class ContribuintesService {
                 .filter(contribuinte -> contribuinte.getDependentes() != null
                         && !contribuinte.getDependentes().isEmpty())
                 .collect(Collectors.toList());
+    }
+
+    public FamiliaDTO getFamiliaDTOByPrincipalCPF(String cpfPrincipal) {
+        // Buscar contribuinte principal pelo CPF
+        Contribuintes contribuintePrincipal = contribuintesRepository.findByCPF(cpfPrincipal);
+        if (contribuintePrincipal == null) {
+            throw new IllegalArgumentException("O contribuinte principal com CPF " + cpfPrincipal + " não foi encontrado.");
+        }
+
+        // Criar objeto FamiliaDTO e preencher os dados do contribuinte principal
+        FamiliaDTO familiaDTO = new FamiliaDTO();
+        familiaDTO.setNomeCivilPrincipal(contribuintePrincipal.getNomeCivil());
+        familiaDTO.setCpfPrincipal(contribuintePrincipal.getCPF());
+
+        // Preencher dados do cônjuge, se existir
+        String cpfConjuge = contribuintePrincipal.getCpfConjuge();
+        if (cpfConjuge != null) {
+            Contribuintes conjuge = contribuintesRepository.findByCPF(cpfConjuge);
+            if (conjuge != null) {
+                familiaDTO.setConjugeNomeCivil(conjuge.getNomeCivil());
+                familiaDTO.setConjugeCPF(conjuge.getCPF());
+            }
+        }
+
+        // Preencher dados dos dependentes
+        List<DependentesDTO> dependentesDTO = new ArrayList<>();
+        List<Dependentes> dependentes = contribuintePrincipal.getDependentes();
+        if (dependentes != null) {
+            for (Dependentes dependente : dependentes) {
+                DependentesDTO dependenteDTO = new DependentesDTO();
+                dependenteDTO.setNomeCivil(dependente.getnomeCivil());
+                dependenteDTO.setCpf(dependente.getCPF());
+                dependentesDTO.add(dependenteDTO);
+            }
+        }
+        familiaDTO.setDependentes(dependentesDTO);
+
+        return familiaDTO;
     }
 }

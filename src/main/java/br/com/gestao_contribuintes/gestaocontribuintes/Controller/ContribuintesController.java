@@ -96,43 +96,12 @@ public class ContribuintesController {
 
     @GetMapping("/familia/{cpf}")
     public ResponseEntity<FamiliaDTO> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
-        List<Contribuintes> familia = contribuintesService.getFamiliaByContribuinteCPF(cpf);
-
-        FamiliaDTO familiaDTO = new FamiliaDTO();
-
-        // Definindo o contribuinte principal
-        Contribuintes contribuintePrincipal = familia.get(0);
-        familiaDTO.setNomeCivilPrincipal(contribuintePrincipal.getNomeCivil());
-        familiaDTO.setCpfPrincipal(contribuintePrincipal.getCPF());
-
-        // Iterando sobre os contribuintes para encontrar o cônjuge e os dependentes
-        for (int i = 1; i < familia.size(); i++) {
-            Contribuintes membroFamilia = familia.get(i);
-
-            // Verificando se é cônjuge
-            if (membroFamilia.getCPF().equals(contribuintePrincipal.getCpfConjuge())) {
-                familiaDTO.setConjugeNomeCivil(membroFamilia.getNomeCivil());
-                familiaDTO.setConjugeCPF(membroFamilia.getCPF());
-            } else {
-                // Se não for cônjuge, é dependente
-                if (familiaDTO.getDependentes() == null) {
-                    familiaDTO.setDependentes(new ArrayList<>());
-                }
-
-                // Mapeando a lista de Dependentes para DependentesDTO
-                List<Dependentes> dependentes = membroFamilia.getDependentes();
-                if (dependentes != null && !dependentes.isEmpty()) {
-                    for (Dependentes dependente : dependentes) {
-                        DependentesDTO dependenteDTO = new DependentesDTO();
-                        dependenteDTO.setNomeCivil(dependente.getnomeCivil());
-                        dependenteDTO.setCpf(dependente.getCPF());
-                        familiaDTO.getDependentes().add(dependenteDTO);
-                    }
-                }
-            }
+        try {
+            FamiliaDTO familiaDTO = contribuintesService.getFamiliaDTOByPrincipalCPF(cpf);
+            return ResponseEntity.ok(familiaDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.ok(familiaDTO);
     }
 
     // DEPENDENTES
