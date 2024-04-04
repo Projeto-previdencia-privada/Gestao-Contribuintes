@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
+
 public class ContribuintesInfo {
 
     private String CPF;
@@ -12,6 +14,13 @@ public class ContribuintesInfo {
     private LocalDate inicioContribuicao;
     private BigDecimal salario;
     private String categoria;
+
+    public ContribuintesInfo(Contribuintes contribuinte) {
+        this.CPF = contribuinte.getCPF();
+        this.salario = contribuinte.getSalario();
+        this.inicioContribuicao = contribuinte.getInicioContribuicao();
+        this.categoria = contribuinte.getCategoria();
+    }
 
     // Getters e Setters
     public String getCPF() {

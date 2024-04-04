@@ -1,7 +1,6 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -48,21 +47,9 @@ public class ContribuintesController {
 
     @GetMapping("/{cpf}")
     public ResponseEntity<ContribuintesInfo> getContribuinteInfoByCPF(@PathVariable String cpf) {
-        // Busca o contribuinte pelo CPF fornecido
-        Optional<Contribuintes> contribuinteOptional = contribuintesService.getContribuinteByCPF(cpf);
-
-        // Verifica se o contribuinte foi encontrado
-        return contribuinteOptional.map(contribuinte -> {
-            // Cria um DTO para armazenar os dados do contribuinte
-            ContribuintesInfo ContribuintesInfo = new ContribuintesInfo();
-            ContribuintesInfo.setCPF(contribuinte.getCPF());
-            ContribuintesInfo.setSalario(contribuinte.getSalario());
-            ContribuintesInfo.setInicioContribuicao(contribuinte.getInicioContribuicao());
-            ContribuintesInfo.setCategoria(contribuinte.getCategoria());
-
-            // Retorna os dados do contribuinte
-            return ResponseEntity.ok(ContribuintesInfo);
-        }).orElse(ResponseEntity.notFound().build());
+        return contribuintesService.getContribuinteByCPF(cpf)
+                .map(contribuinte -> ResponseEntity.ok(new ContribuintesInfo(contribuinte)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{cpf}")
@@ -70,7 +57,6 @@ public class ContribuintesController {
         if (!cpf.equals(contribuintes.getCPF())) {
             return ResponseEntity.badRequest().build();
         }
-
         return contribuintesService.update(contribuintes)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -85,25 +71,15 @@ public class ContribuintesController {
 
     @DeleteMapping("/{cpf}")
     public ResponseEntity<String> delete(@PathVariable("cpf") String cpf) {
-        boolean deleted = contribuintesService.delete(cpf);
-        if (deleted) {
-            return ResponseEntity.ok("Contribuinte excluído");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return contribuintesService.delete(cpf) ? ResponseEntity.ok("Contribuinte excluído")
+                : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/familia/{cpf}")
     public ResponseEntity<FamiliaDTO> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
-        try {
-            FamiliaDTO familiaDTO = contribuintesService.getFamiliaDTOByPrincipalCPF(cpf);
-            return ResponseEntity.ok(familiaDTO);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(contribuintesService.getFamiliaDTOByPrincipalCPF(cpf));
     }
 
-    // DEPENDENTES
     @GetMapping("/{cpf}/dependentes")
     public ResponseEntity<List<DependentesDTO>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
         try {
@@ -127,12 +103,6 @@ public class ContribuintesController {
 
     @PostMapping("/{cpf}/dependentes")
     public ResponseEntity<Contribuintes> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
-        try {
-            Contribuintes contribuinte = contribuintesService.addDependente(cpf, dependente);
-            return ResponseEntity.ok(contribuinte);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(contribuintesService.addDependente(cpf, dependente));
     }
-
 }
