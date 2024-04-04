@@ -105,9 +105,34 @@ Endpoint: ```http://localhost:8081/contribuintes/{cpf_contribuinte}/dependentes`
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os dependentes.
 
+```
+[
+    {
+        "nomeCivil": "Roberto da Costa",
+        "cpf": "10000000001"
+    }
+]
+```
+
 # Requisição GET para Obter a familia do Contribuinte:
 Para obter a lista da árvore genealógica de um contribuintes, você pode fazer uma requisição GET para a seguinte URL:
 
 Endpoint: ```http://localhost:8081/contribuintes/familia/{cpf_contribuinte}```
 
 Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter os familiares.
+
+```
+{
+    "nomeCivilPrincipal": "Nina da Costa",
+    "cpfPrincipal": "11122233303",
+    "conjugeNomeCivil": "Emmanuel da Costa",
+    "conjugeCPF": "11122233302",
+    "dependentes": [
+        {
+            "nomeCivil": "Roberto da Costa",
+            "cpf": "10000000001"
+        }
+    ]
+}
+
+```
