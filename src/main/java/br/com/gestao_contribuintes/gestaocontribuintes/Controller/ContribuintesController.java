@@ -102,7 +102,16 @@ public class ContribuintesController {
     }
 
     @PostMapping("/{cpf}/dependentes")
-    public ResponseEntity<Contribuintes> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
-        return ResponseEntity.ok(contribuintesService.addDependente(cpf, dependente));
+    public ResponseEntity<?> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
+        try {
+            // Tente adicionar o dependente
+            Contribuintes contribuintes = contribuintesService.addDependente(cpf, dependente);
+            return ResponseEntity.ok(contribuintes);
+        } catch (Exception e) {
+            // Em caso de exceção, retorne uma mensagem adequada
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("O dependente já está vinculado ao CPF: " + cpf);
+        }
     }
+
 }
