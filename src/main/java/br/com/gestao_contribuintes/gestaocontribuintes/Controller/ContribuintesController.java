@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.ContribuintesInfo;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
-
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
-
 import br.com.gestao_contribuintes.gestaocontribuintes.Service.ContribuintesService;
 
 @RestController
@@ -34,9 +32,9 @@ public class ContribuintesController {
     }
 
     @PostMapping
-    public ResponseEntity<Contribuintes> create(@RequestBody Contribuintes contribuintes) {
-        Contribuintes createdContribuintes = contribuintesService.create(contribuintes);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdContribuintes);
+    public ResponseEntity<String> create(@RequestBody Contribuintes contribuintes) {
+        contribuintesService.create(contribuintes);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Contribuinte registrado com sucesso");
     }
 
     @GetMapping
@@ -53,21 +51,24 @@ public class ContribuintesController {
     }
 
     @PutMapping("/{cpf}")
-    public ResponseEntity<Contribuintes> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
+    public ResponseEntity<String> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
         if (!cpf.equals(contribuintes.getCPF())) {
             return ResponseEntity.badRequest().build();
         }
         return contribuintesService.update(contribuintes)
-                .map(ResponseEntity::ok)
+                .map(updatedContribuintes -> ResponseEntity.ok("Dados do contribuinte atualizados com sucesso"))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{cpf}/conjuge")
-    public ResponseEntity<Contribuintes> updateConjuge(@PathVariable String cpf, @RequestBody String cpfConjuge) {
-        return contribuintesService.updateCpfConjuge(cpf, cpfConjuge)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+    /*
+     * @PutMapping("/{cpf}/conjuge")
+     * public ResponseEntity<Contribuintes> updateConjuge(@PathVariable String
+     * cpf, @RequestBody String cpfConjuge) {
+     * return contribuintesService.updateCpfConjuge(cpf, cpfConjuge)
+     * .map(ResponseEntity::ok)
+     * .orElse(ResponseEntity.notFound().build());
+     * }
+     */
 
     @DeleteMapping("/{cpf}")
     public ResponseEntity<String> delete(@PathVariable("cpf") String cpf) {
@@ -81,7 +82,7 @@ public class ContribuintesController {
     }
 
     @GetMapping("/{cpf}/dependentes")
-    public ResponseEntity<List<DependentesDTO>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
+    public ResponseEntity<?> getDependentesByContribuinteCPF(@PathVariable String cpf) {
         try {
             List<Dependentes> dependentes = contribuintesService.getDependentesByContribuinteCPF(cpf);
 
@@ -97,7 +98,9 @@ public class ContribuintesController {
 
             return ResponseEntity.ok(dependentesDTOList);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
+            // Retorna a mensagem desejada em caso de exceção IllegalArgumentException
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("CPF fornecido é inválido ou não corresponde a nenhum contribuinte.");
         }
     }
 
