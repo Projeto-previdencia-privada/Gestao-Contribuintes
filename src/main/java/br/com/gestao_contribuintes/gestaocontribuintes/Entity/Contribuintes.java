@@ -40,8 +40,8 @@ public class Contribuintes {
     private String tipoRelacionamento;
     private String cpfPai;
     private String cpfMae;
-    private String cpfAvô;
-    private String cpfAvó;
+   // private String cpfAvô;
+    //private String cpfAvó;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
@@ -90,7 +90,7 @@ public class Contribuintes {
     public void setCpfMae(String cpfMae) {
         this.cpfMae = cpfMae;
     }
-
+/* 
     public String getCpfAvô() {
         return cpfAvô;
     }
@@ -106,7 +106,7 @@ public class Contribuintes {
     public void setCpfAvó(String cpfAvó) {
         this.cpfAvó = cpfAvó;
     }
-
+*/
     public String getCPF() {
         return CPF;
     }

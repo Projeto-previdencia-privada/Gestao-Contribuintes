@@ -42,21 +42,20 @@ Endpoint: ```http://localhost:8081/contribuintes```
 
 ```
     {
-        "nomeCivil": "Emmanuel da Costa",
-        "nomeSocial": "Emmanuel",
-        "endereco": "Rua sem nome, Casa 10, bairro nobre, RJ",
-        "email": "emmanuel@costa.com",
-        "salario": 10000.00,
+        "cpf": "99999999994",
+        "nomeCivil": "Pedro Santos",
+        "nomeSocial": "Pedro",
+        "endereco": "Av. Central, Casa 25, Bairro do Sol, BA",
+        "email": "pedro@santos.com",
+        "salario": 7500.00,
         "categoria": "MEI",
-        "telefone": "21985246666",
-        "inicioContribuicao": "01/07/2006",
-        "tipoRelacionamento": null,
-        "cpfPai": "11122233304",
-        "cpfMae": "11122233305",
-        "cpfAvô": null,
-        "cpfAvó": null,
-        "cpfconjuge": "11122233303",
-        "cpf": "11122233302"
+        "telefone": "(71) 12345-6779",
+        "inicioContribuicao": "03/11/2018",
+        "tipoRelacionamento": "Casado",
+        "cpfPai": "99999999995",
+        "cpfMae": "99999999996",
+        "dependentes": null,
+        "cpfConjuge": "99999999993"
     }
 ```
 
