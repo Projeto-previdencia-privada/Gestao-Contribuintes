@@ -31,18 +31,21 @@ public class ContribuintesController {
         this.contribuintesService = contribuintesService;
     }
 
+    // Cria o registro de um contribuinte
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Contribuintes contribuintes) {
         contribuintesService.create(contribuintes);
         return ResponseEntity.status(HttpStatus.CREATED).body("Contribuinte registrado com sucesso");
     }
 
+    // Busca uma lista de contribuintes
     @GetMapping
     public ResponseEntity<List<Contribuintes>> list() {
         List<Contribuintes> contribuintesList = contribuintesService.getAllContribuintes();
         return ResponseEntity.ok(contribuintesList);
     }
 
+    // Busca a informação do contribuinte
     @GetMapping("/{cpf}")
     public ResponseEntity<ContribuintesInfo> getContribuinteInfoByCPF(@PathVariable String cpf) {
         return contribuintesService.getContribuinteByCPF(cpf)
@@ -50,6 +53,7 @@ public class ContribuintesController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Atualiza as informações do contribuinte
     @PutMapping("/{cpf}")
     public ResponseEntity<String> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
         if (!cpf.equals(contribuintes.getCPF())) {
@@ -70,17 +74,20 @@ public class ContribuintesController {
      * }
      */
 
+    // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
     public ResponseEntity<String> delete(@PathVariable("cpf") String cpf) {
         return contribuintesService.delete(cpf) ? ResponseEntity.ok("Contribuinte excluído")
                 : ResponseEntity.notFound().build();
     }
 
+    // Traz a lista da familia de um contribuinte
     @GetMapping("/familia/{cpf}")
     public ResponseEntity<FamiliaDTO> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
         return ResponseEntity.ok(contribuintesService.getFamiliaDTOByPrincipalCPF(cpf));
     }
 
+    // Traz a lista de dependentes de um contribuinte
     @GetMapping("/{cpf}/dependentes")
     public ResponseEntity<?> getDependentesByContribuinteCPF(@PathVariable String cpf) {
         try {
@@ -104,6 +111,7 @@ public class ContribuintesController {
         }
     }
 
+    // Cria o registro de um dependente
     @PostMapping("/{cpf}/dependentes")
     public ResponseEntity<?> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
         try {
