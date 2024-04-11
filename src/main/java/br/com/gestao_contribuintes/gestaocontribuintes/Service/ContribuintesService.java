@@ -12,6 +12,7 @@ import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Repository.ContribuintesRepository;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -44,15 +45,45 @@ public class ContribuintesService {
         if (contribuintes.getCPF() == null || !contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
             return Optional.empty();
         }
-        return Optional.of(contribuintesRepository.save(contribuintes));
-    }
-
-    public Optional<Contribuintes> updateCpfConjuge(String cpfContribuinte, String cpfConjuge) {
-        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpfContribuinte);
+        // Busca o contribuinte no banco de dados
+        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(contribuintes.getCPF());
         if (contribuinteOptional.isPresent()) {
-            Contribuintes contribuinte = contribuinteOptional.get();
-            contribuinte.setCpfConjuge(cpfConjuge);
-            return Optional.of(contribuintesRepository.save(contribuinte));
+            Contribuintes contribuinteExistente = contribuinteOptional.get();
+            // Atualiza os dados do contribuinte existente com os dados do contribuinte
+            // recebido
+            contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
+            contribuinteExistente.setNomeSocial(contribuintes.getNomeSocial());
+            contribuinteExistente.setEndereco(contribuintes.getEndereco());
+            contribuinteExistente.setEmail(contribuintes.getEmail());
+            contribuinteExistente.setSalario(contribuintes.getSalario());
+            contribuinteExistente.setCategoria(contribuintes.getCategoria());
+            contribuinteExistente.setTelefone(contribuintes.getTelefone());
+            contribuinteExistente.setInicioContribuicao(contribuintes.getInicioContribuicao());
+            contribuinteExistente.setTipoRelacionamento(contribuintes.getTipoRelacionamento());
+            contribuinteExistente.setCpfPai(contribuintes.getCpfPai());
+            contribuinteExistente.setCpfMae(contribuintes.getCpfMae());
+
+            // Atualiza o CPF do cônjuge do contribuinte
+            String cpfConjugeAntigo = contribuinteExistente.getCpfConjuge();
+            String novoCpfConjuge = contribuintes.getCpfConjuge();
+            contribuinteExistente.setCpfConjuge(novoCpfConjuge);
+
+            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge
+            // anterior para null
+            if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
+                Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
+                conjugeOptional.ifPresent(conjuge -> {
+                    conjuge.setCpfConjuge(null);
+                    contribuintesRepository.save(conjuge);
+                });
+            }
+
+            // Mantém a lista de dependentes do contribuinte
+            List<Dependentes> dependentes = contribuinteExistente.getDependentes();
+            contribuintes.setDependentes(dependentes); // Atualiza a lista de dependentes do contribuinte recebido
+
+            // Salva as alterações no banco de dados
+            return Optional.of(contribuintesRepository.save(contribuinteExistente));
         } else {
             return Optional.empty();
         }
@@ -169,7 +200,8 @@ public class ContribuintesService {
         // Buscar contribuinte principal pelo CPF
         Contribuintes contribuintePrincipal = contribuintesRepository.findByCPF(cpfPrincipal);
         if (contribuintePrincipal == null) {
-            throw new IllegalArgumentException("O contribuinte principal com CPF " + cpfPrincipal + " não foi encontrado.");
+            throw new IllegalArgumentException(
+                    "O contribuinte principal com CPF " + cpfPrincipal + " não foi encontrado.");
         }
 
         // Criar objeto FamiliaDTO e preencher os dados do contribuinte principal

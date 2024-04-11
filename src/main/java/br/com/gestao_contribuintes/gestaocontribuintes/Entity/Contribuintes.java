@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,7 +26,10 @@ public class Contribuintes {
 
     @Id
     @Column(name = "CPF")
+    @NotBlank(message = "O campo CPF não pode estar vazio")
+    @Size(min=11, max=11)
     private String CPF;
+    
     private String nomeCivil;
     private String nomeSocial;
     private String endereco;

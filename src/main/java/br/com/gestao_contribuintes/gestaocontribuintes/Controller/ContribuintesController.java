@@ -3,6 +3,7 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,9 @@ public class ContribuintesController {
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Contribuintes contribuintes) {
         contribuintesService.create(contribuintes);
+        if (contribuintes.getCPF() == null || contribuintes.getCPF().isEmpty()) {
+            return ResponseEntity.badRequest().body("O campo CPF deve ser preenchido.");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body("Contribuinte registrado com sucesso");
     }
 
@@ -77,8 +81,17 @@ public class ContribuintesController {
     // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
     public ResponseEntity<String> delete(@PathVariable("cpf") String cpf) {
-        return contribuintesService.delete(cpf) ? ResponseEntity.ok("Contribuinte excluído")
-                : ResponseEntity.notFound().build();
+        try {
+            boolean deleted = contribuintesService.delete(cpf);
+            if (deleted) {
+                return ResponseEntity.ok("Contribuinte excluído com sucesso.");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Exclusão não pode ser realizada, desvincule o dependente do contribuinte.");
+        }
     }
 
     // Traz a lista da familia de um contribuinte
