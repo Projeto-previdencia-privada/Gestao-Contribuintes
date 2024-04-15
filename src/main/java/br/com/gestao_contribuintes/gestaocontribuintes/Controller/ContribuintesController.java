@@ -1,6 +1,7 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +21,7 @@ import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Dependentes;
+import br.com.gestao_contribuintes.gestaocontribuintes.Repository.ContribuintesRepository;
 import br.com.gestao_contribuintes.gestaocontribuintes.Service.ContribuintesService;
 
 @RestController
@@ -27,18 +29,31 @@ import br.com.gestao_contribuintes.gestaocontribuintes.Service.ContribuintesServ
 public class ContribuintesController {
 
     private final ContribuintesService contribuintesService;
+    private final ContribuintesRepository contribuintesRepository;
 
-    public ContribuintesController(ContribuintesService contribuintesService) {
+    public ContribuintesController(ContribuintesService contribuintesService,
+            ContribuintesRepository contribuintesRepository) {
         this.contribuintesService = contribuintesService;
+        this.contribuintesRepository = contribuintesRepository;
     }
 
     // Cria o registro de um contribuinte
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Contribuintes contribuintes) {
-        contribuintesService.create(contribuintes);
+        // Verifica se o CPF está preenchido
         if (contribuintes.getCPF() == null || contribuintes.getCPF().isEmpty()) {
             return ResponseEntity.badRequest().body("O campo CPF deve ser preenchido.");
         }
+
+        // Verifica se o CPF já está cadastrado
+        if (contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
+            return ResponseEntity.badRequest().body("O CPF " + contribuintes.getCPF() + " já está cadastrado.");
+        }
+
+        // Se o CPF não existe, cria o contribuinte
+        contribuintesService.create(contribuintes);
+
+        // Retorna uma resposta de sucesso
         return ResponseEntity.status(HttpStatus.CREATED).body("Contribuinte registrado com sucesso");
     }
 
@@ -51,10 +66,32 @@ public class ContribuintesController {
 
     // Busca a informação do contribuinte
     @GetMapping("/{cpf}")
-    public ResponseEntity<ContribuintesInfo> getContribuinteInfoByCPF(@PathVariable String cpf) {
-        return contribuintesService.getContribuinteByCPF(cpf)
-                .map(contribuinte -> ResponseEntity.ok(new ContribuintesInfo(contribuinte)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getContribuinteByCPF(@PathVariable String cpf) {
+        // Verifica se o CPF fornecido é válido
+        if (!isValidCPF(cpf)) {
+            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
+        }
+
+        // Tenta recuperar o contribuinte pelo CPF
+        Optional<Contribuintes> contribuinteOptional = contribuintesService.getContribuinteByCPF(cpf);
+
+        // Verifica se o contribuinte foi encontrado
+        if (contribuinteOptional.isPresent()) {
+            Contribuintes contribuinte = contribuinteOptional.get();
+            return ResponseEntity.ok(new ContribuintesInfo(contribuinte));
+        } else {
+            // Se o contribuinte não foi encontrado, retorna uma resposta adequada
+            return ResponseEntity.badRequest().body("CPF não encontrado.");
+
+        }
+    }
+
+    private boolean isValidCPF(String cpf) {
+        // Remove caracteres não numéricos do CPF
+        cpf = cpf.replaceAll("[^0-9]", "");
+    
+        // Verifica se o CPF possui exatamente 11 dígitos
+        return cpf.length() == 11;
     }
 
     // Atualiza as informações do contribuinte
@@ -68,15 +105,26 @@ public class ContribuintesController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    /*
-     * @PutMapping("/{cpf}/conjuge")
-     * public ResponseEntity<Contribuintes> updateConjuge(@PathVariable String
-     * cpf, @RequestBody String cpfConjuge) {
-     * return contribuintesService.updateCpfConjuge(cpf, cpfConjuge)
-     * .map(ResponseEntity::ok)
-     * .orElse(ResponseEntity.notFound().build());
-     * }
-     */
+    // Atualiza as informações de um dependente
+    @PutMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
+    public ResponseEntity<?> updateDependente(@PathVariable String cpfContribuinte, @PathVariable String cpfDependente,
+            @RequestBody Dependentes dependente) {
+        try {
+            // Verifica se o dependente existe
+            if (!contribuintesService.dependenteExists(cpfContribuinte, cpfDependente)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Atualiza o dependente
+            Dependentes updatedDependente = contribuintesService.updateDependente(cpfContribuinte, cpfDependente,
+                    dependente);
+            return ResponseEntity.ok(updatedDependente);
+        } catch (Exception e) {
+            // Em caso de exceção, retorne uma mensagem adequada
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao atualizar o dependente.");
+        }
+    }
 
     // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
@@ -91,6 +139,26 @@ public class ContribuintesController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Exclusão não pode ser realizada, desvincule o dependente do contribuinte.");
+        }
+    }
+
+    // Exclui um dependente
+    @DeleteMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
+    public ResponseEntity<?> deleteDependente(@PathVariable String cpfContribuinte,
+            @PathVariable String cpfDependente) {
+        try {
+            // Verifica se o dependente existe
+            if (!contribuintesService.dependenteExists(cpfContribuinte, cpfDependente)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Exclui o dependente
+            contribuintesService.deleteDependente(cpfContribuinte, cpfDependente);
+            return ResponseEntity.ok("Dependente excluído com sucesso.");
+        } catch (Exception e) {
+            // Em caso de exceção, retorne uma mensagem adequada
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao excluir o dependente.");
         }
     }
 
@@ -124,17 +192,14 @@ public class ContribuintesController {
         }
     }
 
-    // Cria o registro de um dependente
     @PostMapping("/{cpf}/dependentes")
-    public ResponseEntity<?> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
+    public ResponseEntity<String> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
         try {
-            // Tente adicionar o dependente
-            Contribuintes contribuintes = contribuintesService.addDependente(cpf, dependente);
-            return ResponseEntity.ok(contribuintes);
+            contribuintesService.addDependente(cpf, dependente);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Dependente vinculado ao CPF: " + cpf);
         } catch (Exception e) {
-            // Em caso de exceção, retorne uma mensagem adequada
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("O dependente já está vinculado ao CPF: " + cpf);
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Dependente já se encontra vinculado ao CPF: " + cpf);
         }
     }
 

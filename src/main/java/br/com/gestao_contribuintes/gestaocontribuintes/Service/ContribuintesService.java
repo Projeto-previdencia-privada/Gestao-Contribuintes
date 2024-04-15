@@ -28,11 +28,17 @@ public class ContribuintesService {
     }
 
     public Contribuintes create(Contribuintes contribuintes) {
-        if (contribuintes != null) {
-            return contribuintesRepository.save(contribuintes);
-        } else {
+        if (contribuintes == null) {
             throw new IllegalArgumentException("O objeto 'contribuintes' não pode ser nulo");
         }
+
+        String cpf = contribuintes.getCPF();
+        if (contribuintesRepository.existsByCPF(cpf)) {
+            throw new IllegalArgumentException("O CPF " + cpf + " já está cadastrado.");
+        }
+
+        // Se o CPF não existe, salva o contribuinte no banco de dados
+        return contribuintesRepository.save(contribuintes);
     }
 
     public List<Contribuintes> getAllContribuintes() {
@@ -123,6 +129,80 @@ public class ContribuintesService {
         return contribuintesRepository.existsByCPF(cpf);
     }
 
+    // Método para atualizar um dependente
+    public Dependentes updateDependente(String cpfContribuinte, String cpfDependente, Dependentes dependente) {
+        // Busca o contribuinte pelo CPF
+        Contribuintes contribuinte = contribuintesRepository.findByCPF(cpfContribuinte);
+        if (contribuinte == null) {
+            throw new IllegalArgumentException("Contribuinte não encontrado");
+        }
+
+        // Procura o dependente pelo CPF
+        Dependentes dependenteExistente = null;
+        for (Dependentes dep : contribuinte.getDependentes()) {
+            if (dep.getCPF().equals(cpfDependente)) {
+                dependenteExistente = dep;
+                break;
+            }
+        }
+        if (dependenteExistente == null) {
+            throw new IllegalArgumentException("Dependente não encontrado");
+        }
+
+        // Atualiza as informações do dependente
+        dependenteExistente.setnomeCivil(dependente.getnomeCivil());
+        // Outros campos que você deseja atualizar
+
+        // Salva as alterações
+        contribuintesRepository.save(contribuinte);
+
+        return dependenteExistente;
+    }
+
+    // Método para excluir um dependente
+    public void deleteDependente(String cpfContribuinte, String cpfDependente) {
+        // Busca o contribuinte pelo CPF
+        Contribuintes contribuinte = contribuintesRepository.findByCPF(cpfContribuinte);
+        if (contribuinte == null) {
+            throw new IllegalArgumentException("Contribuinte não encontrado");
+        }
+
+        // Remove o dependente pelo CPF
+        Dependentes dependenteParaRemover = null;
+        for (Dependentes dep : contribuinte.getDependentes()) {
+            if (dep.getCPF().equals(cpfDependente)) {
+                dependenteParaRemover = dep;
+                break;
+            }
+        }
+        if (dependenteParaRemover == null) {
+            throw new IllegalArgumentException("Dependente não encontrado");
+        }
+        contribuinte.getDependentes().remove(dependenteParaRemover);
+
+        // Salva as alterações
+        contribuintesRepository.save(contribuinte);
+    }
+
+    // Método para verificar se um dependente existe
+    public boolean dependenteExists(String cpfContribuinte, String cpfDependente) {
+        // Busca o contribuinte pelo CPF
+        Contribuintes contribuinte = contribuintesRepository.findByCPF(cpfContribuinte);
+        if (contribuinte == null) {
+            throw new IllegalArgumentException("Contribuinte não encontrado");
+        }
+
+        // Verifica se o dependente existe
+        for (Dependentes dependente : contribuinte.getDependentes()) {
+            if (dependente.getCPF().equals(cpfDependente)) {
+                return true; // Dependente encontrado
+            }
+        }
+
+        return false; // Dependente não encontrado
+    }
+
+    // FAMÍLIA
     public List<Contribuintes> getFamiliaByContribuinteCPF(String cpf) {
         // Busca o contribuinte pelo CPF fornecido
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
