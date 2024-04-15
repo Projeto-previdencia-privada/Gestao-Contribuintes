@@ -1,12 +1,9 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
 public enum TipoRelacionamento {
-    AVÔ("avô"),
-    AVÓ("avó"),
     PAI("pai"),
     MAE("mae"),
-    FILHO("filho"),
-    NETO("neto");
+    FILHO("filho");
 
     private final String descricao;
 
