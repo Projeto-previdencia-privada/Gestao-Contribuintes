@@ -89,7 +89,7 @@ public class ContribuintesController {
     private boolean isValidCPF(String cpf) {
         // Remove caracteres não numéricos do CPF
         cpf = cpf.replaceAll("[^0-9]", "");
-    
+
         // Verifica se o CPF possui exatamente 11 dígitos
         return cpf.length() == 11;
     }
