@@ -69,7 +69,7 @@ public class ContribuintesController {
     public ResponseEntity<?> getContribuinteByCPF(@PathVariable String cpf) {
         // Verifica se o CPF fornecido é válido
         if (!isValidCPF(cpf)) {
-            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
+            return ResponseEntity.badRequest().body("{\"error\": \"CPF fornecido é inválido\"}");
         }
 
         // Tenta recuperar o contribuinte pelo CPF
@@ -81,8 +81,7 @@ public class ContribuintesController {
             return ResponseEntity.ok(new ContribuintesInfo(contribuinte));
         } else {
             // Se o contribuinte não foi encontrado, retorna uma resposta adequada
-            return ResponseEntity.badRequest().body("CPF não encontrado.");
-
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\": \"CPF não encontrado\"}");
         }
     }
 

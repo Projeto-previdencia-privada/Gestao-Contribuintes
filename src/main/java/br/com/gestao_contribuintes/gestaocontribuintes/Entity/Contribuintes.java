@@ -27,9 +27,9 @@ public class Contribuintes {
     @Id
     @Column(name = "CPF")
     @NotBlank(message = "O campo CPF não pode estar vazio")
-    @Size(min=11, max=11)
+    @Size(min = 11, max = 11)
     private String CPF;
-    
+
     private String nomeCivil;
     private String nomeSocial;
     private String endereco;
@@ -45,9 +45,7 @@ public class Contribuintes {
     private String tipoRelacionamento;
     private String cpfPai;
     private String cpfMae;
-   // private String cpfAvô;
-    //private String cpfAvó;
-
+    
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
     private List<Dependentes> dependentes;
@@ -95,23 +93,7 @@ public class Contribuintes {
     public void setCpfMae(String cpfMae) {
         this.cpfMae = cpfMae;
     }
-/* 
-    public String getCpfAvô() {
-        return cpfAvô;
-    }
 
-    public void setCpfAvô(String cpfAvô) {
-        this.cpfAvô = cpfAvô;
-    }
-
-    public String getCpfAvó() {
-        return cpfAvó;
-    }
-
-    public void setCpfAvó(String cpfAvó) {
-        this.cpfAvó = cpfAvó;
-    }
-*/
     public String getCPF() {
         return CPF;
     }
