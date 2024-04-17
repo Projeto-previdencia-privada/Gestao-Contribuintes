@@ -2,6 +2,7 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -69,11 +70,11 @@ public class Contribuintes {
     public void setDependentes(List<Dependentes> dependentes) {
         this.dependentes = dependentes;
     }
-
+    @JsonIgnore
     public String getTipoRelacionamento() {
         return tipoRelacionamento;
     }
-
+    @JsonIgnore
     public void setTipoRelacionamento(String tipoRelacionamento) {
         this.tipoRelacionamento = tipoRelacionamento;
     }

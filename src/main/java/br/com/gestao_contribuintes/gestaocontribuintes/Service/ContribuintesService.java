@@ -55,8 +55,7 @@ public class ContribuintesService {
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(contribuintes.getCPF());
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinteExistente = contribuinteOptional.get();
-            // Atualiza os dados do contribuinte existente com os dados do contribuinte
-            // recebido
+            // Atualiza os dados do contribuinte existente com os dados do contribuinte recebido
             contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
             contribuinteExistente.setNomeSocial(contribuintes.getNomeSocial());
             contribuinteExistente.setEndereco(contribuintes.getEndereco());
@@ -74,8 +73,7 @@ public class ContribuintesService {
             String novoCpfConjuge = contribuintes.getCpfConjuge();
             contribuinteExistente.setCpfConjuge(novoCpfConjuge);
 
-            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge
-            // anterior para null
+            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge anterior para null
             if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
                 Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
                 conjugeOptional.ifPresent(conjuge -> {
@@ -299,6 +297,66 @@ public class ContribuintesService {
             }
         }
 
+        // Buscar e preencher os dados do pai e da mãe do contribuinte principal
+        String cpfPaiPrincipal = contribuintePrincipal.getCpfPai();
+        if (cpfPaiPrincipal != null) {
+            Contribuintes paiPrincipal = contribuintesRepository.findByCPF(cpfPaiPrincipal);
+            if (paiPrincipal != null) {
+                familiaDTO.setNomeCivilPai(paiPrincipal.getNomeCivil());
+                familiaDTO.setCpfPai(paiPrincipal.getCPF());
+
+                // Buscar e preencher os dados do avô paterno
+                String cpfAvoPaterno = paiPrincipal.getCpfPai();
+                if (cpfAvoPaterno != null) {
+                    Contribuintes avoPaterno = contribuintesRepository.findByCPF(cpfAvoPaterno);
+                    if (avoPaterno != null) {
+                        familiaDTO.setNomeCivilAvoPaterno(avoPaterno.getNomeCivil());
+                        familiaDTO.setCpfAvoPaterno(avoPaterno.getCPF());
+                    }
+                }
+
+                // Buscar e preencher os dados da avó paterna
+                String cpfAvoMaterno = paiPrincipal.getCpfMae();
+                if (cpfAvoMaterno != null) {
+                    Contribuintes avoMaterno = contribuintesRepository.findByCPF(cpfAvoMaterno);
+                    if (avoMaterno != null) {
+                        familiaDTO.setNomeCivilAvóPaterno(avoMaterno.getNomeCivil());
+                        familiaDTO.setCpfAvóPaterno(avoMaterno.getCPF());
+                    }
+                }
+            }
+        }
+
+        // Buscar e preencher os dados da mãe do contribuinte principal
+        String cpfMaePrincipal = contribuintePrincipal.getCpfMae();
+        if (cpfMaePrincipal != null) {
+            Contribuintes maePrincipal = contribuintesRepository.findByCPF(cpfMaePrincipal);
+            if (maePrincipal != null) {
+                familiaDTO.setNomeCivilMae(maePrincipal.getNomeCivil());
+                familiaDTO.setCpfMae(maePrincipal.getCPF());
+
+                // Buscar e preencher os dados do avô materno
+                String cpfAvoPaterno = maePrincipal.getCpfPai();
+                if (cpfAvoPaterno != null) {
+                    Contribuintes avoPaterno = contribuintesRepository.findByCPF(cpfAvoPaterno);
+                    if (avoPaterno != null) {
+                        familiaDTO.setNomeCivilAvoMaterno(avoPaterno.getNomeCivil());
+                        familiaDTO.setCpfAvoMaterno(avoPaterno.getCPF());
+                    }
+                }
+
+                // Buscar e preencher os dados da avó materna
+                String cpfAvoMaterno = maePrincipal.getCpfMae();
+                if (cpfAvoMaterno != null) {
+                    Contribuintes avoMaterno = contribuintesRepository.findByCPF(cpfAvoMaterno);
+                    if (avoMaterno != null) {
+                        familiaDTO.setNomeCivilAvóMaterno(avoMaterno.getNomeCivil());
+                        familiaDTO.setCpfAvóMaterno(avoMaterno.getCPF());
+                    }
+                }
+            }
+        }
+
         // Preencher dados dos dependentes
         List<DependentesDTO> dependentesDTO = new ArrayList<>();
         List<Dependentes> dependentes = contribuintePrincipal.getDependentes();
@@ -314,4 +372,5 @@ public class ContribuintesService {
 
         return familiaDTO;
     }
+
 }

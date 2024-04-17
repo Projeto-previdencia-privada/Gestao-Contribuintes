@@ -42,20 +42,19 @@ Endpoint: ```http://localhost:8081/contribuintes```
 
 ```
     {
-        "cpf": "99999999994",
-        "nomeCivil": "Pedro Santos",
-        "nomeSocial": "Pedro",
-        "endereco": "Av. Central, Casa 25, Bairro do Sol, BA",
-        "email": "pedro@santos.com",
-        "salario": 7500.00,
+        "cpf": "10000000001",
+        "nomeCivil": "Roberta Silva Cardoso",
+        "nomeSocial": "Roberta Cardoso",
+        "endereco": "Rua 22, Casa 19, bairro modesto, MG",
+        "email": "roberta@cardoso.com",
+        "salario": 10000.00,
         "categoria": "MEI",
-        "telefone": "(71) 12345-6779",
-        "inicioContribuicao": "03/11/2018",
-        "tipoRelacionamento": "Casado",
-        "cpfPai": "99999999995",
-        "cpfMae": "99999999996",
+        "telefone": "31985252586",
+        "inicioContribuicao": "01/02/2010",
+        "cpfPai": null,
+        "cpfMae": null,
         "dependentes": null,
-        "cpfConjuge": "99999999993"
+        "cpfConjuge": null
     }
 ```
 
