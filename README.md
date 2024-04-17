@@ -121,16 +121,31 @@ Substitua {cpf_contribuinte} pelo CPF do contribuinte do qual você deseja obter
 
 ```
 {
-    "nomeCivilPrincipal": "Nina da Costa",
-    "cpfPrincipal": "11122233303",
-    "conjugeNomeCivil": "Emmanuel da Costa",
-    "conjugeCPF": "11122233302",
-    "dependentes": [
-        {
-            "nomeCivil": "Roberto da Costa",
-            "cpf": "10000000001"
-        }
-    ]
+    "nomeCivilPrincipal": "Amanda Costa",
+    "cpfPrincipal": "10000000995",
+
+    "conjugeNomeCivil": "Lucas Souza",
+    "conjugeCPF": "10000000996",
+
+    "nomeCivilPai": "Fernando Silva",
+    "cpfPai": "10000000994",
+
+    "nomeCivilMae": "Juliana Santos",
+    "cpfMae": "10000000993",
+
+    "nomeCivilAvoPaterno": "Gabriel Santos",
+    "cpfAvoPaterno": "10000009997",
+
+    "nomeCivilAvóPaterno": "Carolina Oliveira",
+    "cpfAvóPaterno": "10000000998",
+
+    "nomeCivilAvoMaterno": "Ricardo Oliveira",
+    "cpfAvoMaterno": "10000000992",
+
+    "nomeCivilAvóMaterno": "Karina Soares",
+    "cpfAvóMaterno": "10000009991",
+    
+    "dependentes": []
 }
 
 ```
