@@ -55,7 +55,8 @@ public class ContribuintesService {
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(contribuintes.getCPF());
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinteExistente = contribuinteOptional.get();
-            // Atualiza os dados do contribuinte existente com os dados do contribuinte recebido
+            // Atualiza os dados do contribuinte existente com os dados do contribuinte
+            // recebido
             contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
             contribuinteExistente.setNomeSocial(contribuintes.getNomeSocial());
             contribuinteExistente.setEndereco(contribuintes.getEndereco());
@@ -73,7 +74,8 @@ public class ContribuintesService {
             String novoCpfConjuge = contribuintes.getCpfConjuge();
             contribuinteExistente.setCpfConjuge(novoCpfConjuge);
 
-            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge anterior para null
+            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge
+            // anterior para null
             if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
                 Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
                 conjugeOptional.ifPresent(conjuge -> {
@@ -149,7 +151,6 @@ public class ContribuintesService {
 
         // Atualiza as informações do dependente
         dependenteExistente.setnomeCivil(dependente.getnomeCivil());
-        // Outros campos que você deseja atualizar
 
         // Salva as alterações
         contribuintesRepository.save(contribuinte);
@@ -230,7 +231,7 @@ public class ContribuintesService {
                             Contribuintes contribuinteDependente = new Contribuintes();
                             contribuinteDependente.setNomeCivil(dependente.getnomeCivil());
                             contribuinteDependente.setCPF(dependente.getCPF());
-                            // Se houver necessidade de mais atributos, defina-os aqui
+
                             return contribuinteDependente;
                         })
                         .collect(Collectors.toList());
