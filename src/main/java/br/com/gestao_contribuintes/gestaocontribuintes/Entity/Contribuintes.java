@@ -47,6 +47,7 @@ public class Contribuintes {
     private String cpfPai;
     private String cpfMae;
     
+    
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
     private List<Dependentes> dependentes;
@@ -62,11 +63,11 @@ public class Contribuintes {
     public void setCpfConjuge(String cpfConjuge) {
         this.cpfConjuge = cpfConjuge;
     }
-
+    @JsonIgnore
     public List<Dependentes> getDependentes() {
         return dependentes;
     }
-
+    @JsonIgnore
     public void setDependentes(List<Dependentes> dependentes) {
         this.dependentes = dependentes;
     }

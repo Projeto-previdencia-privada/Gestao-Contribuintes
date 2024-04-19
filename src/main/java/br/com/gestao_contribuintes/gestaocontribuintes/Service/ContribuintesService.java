@@ -43,39 +43,42 @@ public class ContribuintesService {
 
     public List<Contribuintes> getAllContribuintes() {
         List<Contribuintes> contribuintesList = contribuintesRepository.findAll();
-        contribuintesList.forEach(contribuinte -> contribuinte.setDependentes(null)); // Define os dependentes como null
+        // contribuintesList.forEach(contribuinte -> contribuinte.setDependentes(null));
+        // // Define os dependentes como null
         return contribuintesList;
     }
 
     public Optional<Contribuintes> update(Contribuintes contribuintes) {
-        if (contribuintes.getCPF() == null || !contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
+        if (contribuintes.getCPF() != null && !contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
             return Optional.empty();
         }
+
         // Busca o contribuinte no banco de dados
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(contribuintes.getCPF());
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinteExistente = contribuinteOptional.get();
-            // Atualiza os dados do contribuinte existente com os dados do contribuinte
-            // recebido
-            contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
-            contribuinteExistente.setNomeSocial(contribuintes.getNomeSocial());
-            contribuinteExistente.setEndereco(contribuintes.getEndereco());
-            contribuinteExistente.setEmail(contribuintes.getEmail());
-            contribuinteExistente.setSalario(contribuintes.getSalario());
-            contribuinteExistente.setCategoria(contribuintes.getCategoria());
-            contribuinteExistente.setTelefone(contribuintes.getTelefone());
-            contribuinteExistente.setInicioContribuicao(contribuintes.getInicioContribuicao());
-            contribuinteExistente.setTipoRelacionamento(contribuintes.getTipoRelacionamento());
-            contribuinteExistente.setCpfPai(contribuintes.getCpfPai());
-            contribuinteExistente.setCpfMae(contribuintes.getCpfMae());
-
+            // Atualiza os dados do contribuinte existente com os dados do contribuinte recebido
+            if (contribuintes.getCPF() != null) {
+                contribuinteExistente.setCPF(contribuintes.getCPF());
+                contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
+                contribuinteExistente.setNomeSocial(contribuintes.getNomeSocial());
+                contribuinteExistente.setEndereco(contribuintes.getEndereco());
+                contribuinteExistente.setEmail(contribuintes.getEmail());
+                contribuinteExistente.setSalario(contribuintes.getSalario());
+                contribuinteExistente.setCategoria(contribuintes.getCategoria());
+                contribuinteExistente.setTelefone(contribuintes.getTelefone());
+                contribuinteExistente.setInicioContribuicao(contribuintes.getInicioContribuicao());
+                contribuinteExistente.setTipoRelacionamento(contribuintes.getTipoRelacionamento());
+                contribuinteExistente.setCpfPai(contribuintes.getCpfPai());
+                contribuinteExistente.setCpfMae(contribuintes.getCpfMae());
+            }
+            ;
             // Atualiza o CPF do cônjuge do contribuinte
             String cpfConjugeAntigo = contribuinteExistente.getCpfConjuge();
             String novoCpfConjuge = contribuintes.getCpfConjuge();
             contribuinteExistente.setCpfConjuge(novoCpfConjuge);
 
-            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge
-            // anterior para null
+            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge anterior para null
             if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
                 Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
                 conjugeOptional.ifPresent(conjuge -> {

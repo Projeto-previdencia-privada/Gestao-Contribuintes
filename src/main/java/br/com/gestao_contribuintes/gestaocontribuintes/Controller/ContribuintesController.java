@@ -1,6 +1,7 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -69,7 +70,7 @@ public class ContribuintesController {
     public ResponseEntity<?> getContribuinteByCPF(@PathVariable String cpf) {
         // Verifica se o CPF fornecido é válido
         if (!isValidCPF(cpf)) {
-            return ResponseEntity.badRequest().body("{\"error\": \"CPF fornecido é inválido\"}");
+            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
         }
 
         // Tenta recuperar o contribuinte pelo CPF
@@ -81,7 +82,7 @@ public class ContribuintesController {
             return ResponseEntity.ok(new ContribuintesInfo(contribuinte));
         } else {
             // Se o contribuinte não foi encontrado, retorna uma resposta adequada
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\": \"CPF não encontrado\"}");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CPF não encontrado");
         }
     }
 
@@ -89,29 +90,51 @@ public class ContribuintesController {
         // Remove caracteres não numéricos do CPF
         cpf = cpf.replaceAll("[^0-9]", "");
 
-        // Verifica se o CPF possui exatamente 11 dígitos
-        return cpf.length() == 11;
+        // Verifica se o CPF possui exatamente 11 dígitos usando uma expressão regular
+        return cpf.matches("^\\d{11}$");
+
     }
+    
 
     // Atualiza as informações do contribuinte
     @PutMapping("/{cpf}")
-    public ResponseEntity<String> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
-        if (!cpf.equals(contribuintes.getCPF())) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
+        // Verifica se o CPF é válido
+        if (!isValidCPF(cpf)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "CPF inválido"));
         }
-        return contribuintesService.update(contribuintes)
-                .map(updatedContribuintes -> ResponseEntity.ok("Dados do contribuinte atualizados com sucesso"))
-                .orElse(ResponseEntity.notFound().build());
+
+        // Define o CPF recebido na URL no objeto contribuintes
+        contribuintes.setCPF(cpf);
+
+        // Tenta atualizar o contribuinte
+        Optional<Contribuintes> updatedContribuintes = contribuintesService.update(contribuintes);
+
+        // Verifica se o contribuinte foi atualizado com sucesso
+        return updatedContribuintes.map(updated -> ResponseEntity
+                .ok(Map.of("message", "Dados do contribuinte atualizados com sucesso")))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "CPF não encontrado")));
     }
+
 
     // Atualiza as informações de um dependente
     @PutMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
     public ResponseEntity<?> updateDependente(@PathVariable String cpfContribuinte, @PathVariable String cpfDependente,
             @RequestBody Dependentes dependente) {
+        // Verifica se o CPF do contribuinte é válido
+        if (!isValidCPF(cpfContribuinte)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF do contribuinte inválido");
+        }
+
+        // Verifica se o CPF do dependente é válido
+        if (!isValidCPF(cpfDependente)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF do dependente inválido");
+        }
+
         try {
             // Verifica se o dependente existe
             if (!contribuintesService.dependenteExists(cpfContribuinte, cpfDependente)) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CPF do dependente não encontrado");
             }
 
             // Atualiza o dependente
@@ -128,12 +151,17 @@ public class ContribuintesController {
     // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
     public ResponseEntity<String> delete(@PathVariable("cpf") String cpf) {
+         // Verifica se o CPF fornecido é válido
+        if (!isValidCPF(cpf)) {
+            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
+        }
         try {
             boolean deleted = contribuintesService.delete(cpf);
             if (deleted) {
                 return ResponseEntity.ok("Contribuinte excluído com sucesso.");
             } else {
-                return ResponseEntity.notFound().build();
+                // Se o contribuinte não foi encontrado, retorna uma resposta adequada
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CPF não encontrado");
             }
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -145,31 +173,62 @@ public class ContribuintesController {
     @DeleteMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
     public ResponseEntity<?> deleteDependente(@PathVariable String cpfContribuinte,
             @PathVariable String cpfDependente) {
+        // Verifica se o CPF do contribuinte é válido
+        if (!isValidCPF(cpfContribuinte)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF do contribuinte inválido");
+        }
+
+        // Verifica se o CPF do dependente é válido
+        if (!isValidCPF(cpfDependente)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF do dependente inválido");
+        }
+
         try {
             // Verifica se o dependente existe
             if (!contribuintesService.dependenteExists(cpfContribuinte, cpfDependente)) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CPF do dependente não encontrado");
             }
 
             // Exclui o dependente
             contribuintesService.deleteDependente(cpfContribuinte, cpfDependente);
             return ResponseEntity.ok("Dependente excluído com sucesso.");
+
         } catch (Exception e) {
             // Em caso de exceção, retorne uma mensagem adequada
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao excluir o dependente.");
         }
+
     }
 
-    // Traz a lista da familia de um contribuinte
+    //Traz a família de um contribuinte
     @GetMapping("/familia/{cpf}")
-    public ResponseEntity<FamiliaDTO> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
-        return ResponseEntity.ok(contribuintesService.getFamiliaDTOByPrincipalCPF(cpf));
+    public ResponseEntity<?> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
+        // Verifica se o CPF fornecido é inválido
+        if (!isValidCPF(cpf)) {
+            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
+        }
+
+        // Verifica se o CPF do contribuinte está na base de dados
+        if (!contribuintesRepository.existsByCPF(cpf)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CPF do contribuinte não encontrado");
+        }
+
+        // Obtém a lista de membros da família do contribuinte com o CPF fornecido
+        FamiliaDTO familiaDTO = contribuintesService.getFamiliaDTOByPrincipalCPF(cpf);
+
+        // Retorna a lista de membros da família
+        return ResponseEntity.ok(familiaDTO);
     }
+
 
     // Traz a lista de dependentes de um contribuinte
     @GetMapping("/{cpf}/dependentes")
     public ResponseEntity<?> getDependentesByContribuinteCPF(@PathVariable String cpf) {
+        if (!isValidCPF(cpf)) {
+            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
+        }
+        
         try {
             List<Dependentes> dependentes = contribuintesService.getDependentesByContribuinteCPF(cpf);
 
@@ -187,12 +246,21 @@ public class ContribuintesController {
         } catch (IllegalArgumentException e) {
             // Retorna a mensagem desejada em caso de exceção IllegalArgumentException
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("CPF fornecido é inválido ou não corresponde a nenhum contribuinte.");
+                    .body("CPF do contribuinte não encontrado.");
         }
     }
 
     @PostMapping("/{cpf}/dependentes")
     public ResponseEntity<String> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
+
+        if (!isValidCPF(cpf)) {
+            return ResponseEntity.badRequest().body("CPF fornecido é inválido");
+        }
+        
+        // Verifica se o CPF do contribuinte está na base de dados
+        if (!contribuintesRepository.existsByCPF(cpf)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CPF do contribuinte não encontrado");
+        }
         try {
             contribuintesService.addDependente(cpf, dependente);
             return ResponseEntity.status(HttpStatus.CREATED).body("Dependente vinculado ao CPF: " + cpf);
