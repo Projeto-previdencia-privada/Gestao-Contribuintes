@@ -43,8 +43,6 @@ public class ContribuintesService {
 
     public List<Contribuintes> getAllContribuintes() {
         List<Contribuintes> contribuintesList = contribuintesRepository.findAll();
-        // contribuintesList.forEach(contribuinte -> contribuinte.setDependentes(null));
-        // // Define os dependentes como null
         return contribuintesList;
     }
 
@@ -52,51 +50,65 @@ public class ContribuintesService {
         if (contribuintes.getCPF() != null && !contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
             return Optional.empty();
         }
-
-        // Busca o contribuinte no banco de dados
+    
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(contribuintes.getCPF());
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinteExistente = contribuinteOptional.get();
-            // Atualiza os dados do contribuinte existente com os dados do contribuinte recebido
-            if (contribuintes.getCPF() != null) {
-                contribuinteExistente.setCPF(contribuintes.getCPF());
+    
+            // Atualiza apenas campos não nulos do contribuinte recebido
+            if (contribuintes.getNomeCivil() != null) {
                 contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
+            }
+            if (contribuintes.getNomeSocial() != null) {
                 contribuinteExistente.setNomeSocial(contribuintes.getNomeSocial());
+            }
+            if (contribuintes.getEndereco() != null) {
                 contribuinteExistente.setEndereco(contribuintes.getEndereco());
+            }
+            if (contribuintes.getEmail() != null) {
                 contribuinteExistente.setEmail(contribuintes.getEmail());
+            }
+            if (contribuintes.getSalario() != null) {
                 contribuinteExistente.setSalario(contribuintes.getSalario());
+            }
+            if (contribuintes.getCategoria() != null) {
                 contribuinteExistente.setCategoria(contribuintes.getCategoria());
+            }
+            if (contribuintes.getTelefone() != null) {
                 contribuinteExistente.setTelefone(contribuintes.getTelefone());
+            }
+            if (contribuintes.getInicioContribuicao() != null) {
                 contribuinteExistente.setInicioContribuicao(contribuintes.getInicioContribuicao());
-                contribuinteExistente.setTipoRelacionamento(contribuintes.getTipoRelacionamento());
+            }
+            if (contribuintes.getCpfPai() != null) {
                 contribuinteExistente.setCpfPai(contribuintes.getCpfPai());
+            }
+            if (contribuintes.getCpfMae() != null) {
                 contribuinteExistente.setCpfMae(contribuintes.getCpfMae());
             }
-            ;
-            // Atualiza o CPF do cônjuge do contribuinte
+    
+            // Atualiza CPF do cônjuge
             String cpfConjugeAntigo = contribuinteExistente.getCpfConjuge();
             String novoCpfConjuge = contribuintes.getCpfConjuge();
-            contribuinteExistente.setCpfConjuge(novoCpfConjuge);
-
-            // Se o contribuinte tinha um cônjuge anterior, atualize o CPF do cônjuge anterior para null
-            if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
-                Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
-                conjugeOptional.ifPresent(conjuge -> {
-                    conjuge.setCpfConjuge(null);
-                    contribuintesRepository.save(conjuge);
-                });
+            if (novoCpfConjuge != null && !novoCpfConjuge.equals(cpfConjugeAntigo)) {
+                contribuinteExistente.setCpfConjuge(novoCpfConjuge);
+    
+                if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
+                    Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
+                    conjugeOptional.ifPresent(conjuge -> {
+                        conjuge.setCpfConjuge(null);
+                        contribuintesRepository.save(conjuge);
+                    });
+                }
             }
-
-            // Mantém a lista de dependentes do contribuinte
-            List<Dependentes> dependentes = contribuinteExistente.getDependentes();
-            contribuintes.setDependentes(dependentes); // Atualiza a lista de dependentes do contribuinte recebido
-
+    
             // Salva as alterações no banco de dados
             return Optional.of(contribuintesRepository.save(contribuinteExistente));
-        } else {
-            return Optional.empty();
         }
+    
+        return Optional.empty();
     }
+    
 
     @Transactional
     public boolean delete(String cpf) {
