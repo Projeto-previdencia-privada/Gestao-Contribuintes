@@ -50,11 +50,11 @@ public class ContribuintesService {
         if (contribuintes.getCPF() != null && !contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
             return Optional.empty();
         }
-    
+
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(contribuintes.getCPF());
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinteExistente = contribuinteOptional.get();
-    
+
             // Atualiza apenas campos não nulos do contribuinte recebido
             if (contribuintes.getNomeCivil() != null) {
                 contribuinteExistente.setNomeCivil(contribuintes.getNomeCivil());
@@ -86,13 +86,13 @@ public class ContribuintesService {
             if (contribuintes.getCpfMae() != null) {
                 contribuinteExistente.setCpfMae(contribuintes.getCpfMae());
             }
-    
+
             // Atualiza CPF do cônjuge
             String cpfConjugeAntigo = contribuinteExistente.getCpfConjuge();
             String novoCpfConjuge = contribuintes.getCpfConjuge();
             if (novoCpfConjuge != null && !novoCpfConjuge.equals(cpfConjugeAntigo)) {
                 contribuinteExistente.setCpfConjuge(novoCpfConjuge);
-    
+
                 if (cpfConjugeAntigo != null && !cpfConjugeAntigo.equals(novoCpfConjuge)) {
                     Optional<Contribuintes> conjugeOptional = contribuintesRepository.findById(cpfConjugeAntigo);
                     conjugeOptional.ifPresent(conjuge -> {
@@ -101,14 +101,13 @@ public class ContribuintesService {
                     });
                 }
             }
-    
+
             // Salva as alterações no banco de dados
             return Optional.of(contribuintesRepository.save(contribuinteExistente));
         }
-    
+
         return Optional.empty();
     }
-    
 
     @Transactional
     public boolean delete(String cpf) {
