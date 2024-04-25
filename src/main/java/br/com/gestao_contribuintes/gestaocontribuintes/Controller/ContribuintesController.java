@@ -47,9 +47,15 @@ public class ContribuintesController {
             return ResponseEntity.badRequest().body(Map.of("error", "O campo CPF deve ser preenchido."));
         }
 
+        // Verifica se o CPF é válido
+        if (!isValidCPF(contribuintes.getCPF())) {
+            return ResponseEntity.badRequest().body(Map.of("error", "CPF inválido."));
+        }
+
         // Verifica se o CPF já está cadastrado
         if (contribuintesRepository.existsByCPF(contribuintes.getCPF())) {
-            return ResponseEntity.badRequest().body(Map.of("error", "O CPF " + contribuintes.getCPF() + " já está cadastrado."));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "O CPF " + contribuintes.getCPF() + " já está cadastrado."));
         }
 
         // Se o CPF não existe, cria o contribuinte
@@ -89,10 +95,10 @@ public class ContribuintesController {
             Map<String, Object> notFound = Map.of("error", "CPF não encontrado");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFound);
         }
-        
+
     }
 
-    //VALIDAÇÃO DE CPF
+    // VALIDAÇÃO DE CPF
     private boolean isValidCPF(String cpf) {
         // Remove caracteres não numéricos do CPF
         cpf = cpf.replaceAll("[^0-9]", "");
@@ -202,7 +208,8 @@ public class ContribuintesController {
             }
         } catch (DataIntegrityViolationException e) {
             // Em caso de erro, retorna uma mensagem apropriada
-            Map<String, Object> internalError = Map.of("error","Exclusão não pode ser realizada, desvincule o dependente do contribuinte.");
+            Map<String, Object> internalError = Map.of("error",
+                    "Exclusão não pode ser realizada, desvincule o dependente do contribuinte.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(internalError);
         }
     }
