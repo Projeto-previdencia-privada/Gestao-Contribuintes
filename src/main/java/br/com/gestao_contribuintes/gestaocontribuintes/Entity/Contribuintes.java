@@ -3,6 +3,7 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -23,6 +24,7 @@ import java.util.List;
 @Entity
 @Table(name = "contribuintes")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cpf")
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Contribuintes {
 
     @Id
@@ -43,11 +45,12 @@ public class Contribuintes {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate inicioContribuicao;
 
-    private String tipoRelacionamento;
+    //private String tipoRelacionamento;
     private String cpfPai;
     private String cpfMae;
-    
-    
+    private String cpfPai2;
+    private String cpfMae2;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
     private List<Dependentes> dependentes;
@@ -55,6 +58,22 @@ public class Contribuintes {
     private String cpfConjuge;
 
     // Getters e Setters
+
+    public String getCpfPai2() {
+        return cpfPai2;
+    }
+
+    public void setCpfPai2(String cpfPai2) {
+        this.cpfPai2 = cpfPai2;
+    }
+
+    public String getCpfMae2() {
+        return cpfMae2;
+    }
+
+    public void setCpfMae2(String cpfMae2) {
+        this.cpfMae2 = cpfMae2;
+    }
 
     public String getCpfConjuge() {
         return cpfConjuge;
@@ -71,14 +90,14 @@ public class Contribuintes {
     public void setDependentes(List<Dependentes> dependentes) {
         this.dependentes = dependentes;
     }
-    @JsonIgnore
+    /*@JsonIgnore
     public String getTipoRelacionamento() {
         return tipoRelacionamento;
     }
     @JsonIgnore
     public void setTipoRelacionamento(String tipoRelacionamento) {
         this.tipoRelacionamento = tipoRelacionamento;
-    }
+    }*/
 
     public String getCpfPai() {
         return cpfPai;

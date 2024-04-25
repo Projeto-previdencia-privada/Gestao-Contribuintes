@@ -2,6 +2,8 @@ package br.com.gestao_contribuintes.gestaocontribuintes.DTO;
 
 import java.util.List;
 
+
+
 public class FamiliaDTO {
     private String nomeCivilPrincipal;
     private String cpfPrincipal;

@@ -11,6 +11,8 @@ CREATE TABLE contribuintes (
     tipo_relacionamento VARCHAR(50),
     cpf_pai VARCHAR(11),
     cpf_mae VARCHAR(11),
+    cpf_pai2 VARCHAR(11),
+    cpf_mae2 VARCHAR(11),
     cpf_conjuge VARCHAR(11)
 );
 
