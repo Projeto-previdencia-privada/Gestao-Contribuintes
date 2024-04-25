@@ -120,7 +120,7 @@ public class ContribuintesController {
     // Atualiza as informações do contribuinte
     @PutMapping("/{cpf}")
     public ResponseEntity<?> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
-        // Verifica se o campo "CPF" no corpo da requisição é diferente do CPF da URL
+        // IMPEDE DO CPF DE SER ATUALIZADO
         if (contribuintes.getCPF() != null && !contribuintes.getCPF().equals(cpf)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "ALteração não permitida"));
         }
@@ -144,49 +144,40 @@ public class ContribuintesController {
         }
     }
 
-    // Atualiza as informações de um dependente
     @PutMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
     public ResponseEntity<Map<String, Object>> updateDependente(
-            @PathVariable String cpfContribuinte,
-            @PathVariable String cpfDependente,
-            @RequestBody Dependentes dependente) {
+    @PathVariable String cpfContribuinte,
+    @PathVariable String cpfDependente,
+    @RequestBody Dependentes dependente) {
 
-        // Verifica se o CPF do contribuinte é válido
-        if (!isValidCPF(cpfContribuinte)) {
-            Map<String, Object> error = Map.of("error", "Erro: Parâmetro indevido");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        }
-
-        // Verifica se o CPF do dependente é válido
-        if (!isValidCPF(cpfDependente)) {
-            Map<String, Object> error = Map.of("error", "CPF do dependente inválido");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        }
-
-        // Verifica se o campo "CPF" do corpo da requisição é diferente do CPF do
-        // dependente na URL
-        if (dependente.getCPF() != null && !dependente.getCPF().equals(cpfDependente)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Erro: Parâmetro indevido"));
-        }
-        try {
-            // Verifica se o dependente existe
-            if (!contribuintesService.dependenteExists(cpfContribuinte, cpfDependente)) {
-                Map<String, Object> notFound = Map.of("error", "CPF do dependente não encontrado");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFound);
-            }
-
-            // Atualiza o dependente
-            Dependentes updatedDependente = contribuintesService.updateDependente(cpfContribuinte, cpfDependente,
-                    dependente);
-            Map<String, Object> success = Map.of("message", "Dependente atualizado com sucesso", "dependente",
-                    updatedDependente);
-            return ResponseEntity.ok(success);
-        } catch (Exception e) {
-            // Em caso de exceção, retorne uma mensagem adequada
-            Map<String, Object> error = Map.of("error", "Erro ao atualizar o dependente");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-        }
+    // Validações de CPF para contribuinte e dependente
+    if (!isValidCPF(cpfContribuinte) || !isValidCPF(cpfDependente)) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", "CPF inválido na URL"));
     }
+    
+    if (dependente.getCPF() != null) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", "Alteração não é permitida"));
+    }
+
+    try {
+        // Atualiza o dependente
+        contribuintesService.updateDependente(cpfContribuinte, cpfDependente, dependente);
+
+        // Retorna apenas a mensagem de sucesso
+        return ResponseEntity.ok(Map.of("message", "Dados do dependente atualizados com sucesso"));
+
+    } catch (IllegalArgumentException e) {
+        // Lida com erros conhecidos
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", e.getMessage()));
+    } catch (Exception e) {
+        // Lida com exceções inesperadas
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Erro ao atualizar o dependente"));
+    }
+}
 
     // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
@@ -312,7 +303,19 @@ public class ContribuintesController {
             @RequestBody Dependentes dependente) {
         // Verifica se o CPF fornecido é válido
         if (!isValidCPF(cpf)) {
-            Map<String, Object> error = Map.of("error", "CPF fornecido é inválido");
+            Map<String, Object> error = Map.of("error", "CPF fornecido na url é inválido");
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        // Verifica se o CPF fornecido do contribuinte é válido
+        if (!isValidCPF(cpf)) {
+            Map<String, Object> error = Map.of("error", "CPF do contribuinte fornecido é inválido");
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        // Verifica se o CPF do dependente é válido
+        if (!isValidCPF(dependente.getCPF())) {
+            Map<String, Object> error = Map.of("error", "CPF do dependente é inválido");
             return ResponseEntity.badRequest().body(error);
         }
 
@@ -328,7 +331,7 @@ public class ContribuintesController {
             return ResponseEntity.status(HttpStatus.CREATED).body(success);
 
         } catch (Exception e) {
-            Map<String, Object> conflict = Map.of("error", "Dependente já se encontra vinculado ao CPF: " + cpf);
+            Map<String, Object> conflict = Map.of("error", "Dependente já está vinculado ao CPF: " + cpf);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(conflict);
         }
     }

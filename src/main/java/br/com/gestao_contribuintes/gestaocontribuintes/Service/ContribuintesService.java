@@ -143,34 +143,31 @@ public class ContribuintesService {
         return contribuintesRepository.existsByCPF(cpf);
     }
 
-    // Método para atualizar um dependente
+    //Método para atualizar dependente
     public Dependentes updateDependente(String cpfContribuinte, String cpfDependente, Dependentes dependente) {
-        // Busca o contribuinte pelo CPF
+        
+        // Verifica se o contribuinte existe
         Contribuintes contribuinte = contribuintesRepository.findByCPF(cpfContribuinte);
         if (contribuinte == null) {
             throw new IllegalArgumentException("Contribuinte não encontrado");
         }
-
-        // Procura o dependente pelo CPF
-        Dependentes dependenteExistente = null;
-        for (Dependentes dep : contribuinte.getDependentes()) {
-            if (dep.getCPF().equals(cpfDependente)) {
-                dependenteExistente = dep;
-                break;
-            }
-        }
-        if (dependenteExistente == null) {
-            throw new IllegalArgumentException("Dependente não encontrado");
-        }
-
+    
+        // Verifica se o dependente existe
+        Dependentes dependenteExistente = contribuinte.getDependentes().stream()
+            .filter(dep -> dep.getCPF().equals(cpfDependente))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Dependente não encontrado"));
+    
         // Atualiza as informações do dependente
         dependenteExistente.setnomeCivil(dependente.getnomeCivil());
-
+    
         // Salva as alterações
         contribuintesRepository.save(contribuinte);
-
+    
+        // Retorna apenas o dependente atualizado
         return dependenteExistente;
     }
+    
 
     // Método para excluir um dependente
     public void deleteDependente(String cpfContribuinte, String cpfDependente) {
