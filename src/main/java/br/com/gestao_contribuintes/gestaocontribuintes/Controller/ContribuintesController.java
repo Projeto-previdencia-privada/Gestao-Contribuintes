@@ -146,38 +146,37 @@ public class ContribuintesController {
 
     @PutMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
     public ResponseEntity<Map<String, Object>> updateDependente(
-    @PathVariable String cpfContribuinte,
-    @PathVariable String cpfDependente,
-    @RequestBody Dependentes dependente) {
+            @PathVariable String cpfContribuinte,
+            @PathVariable String cpfDependente,
+            @RequestBody Dependentes dependente) {
 
-    // Validações de CPF para contribuinte e dependente
-    if (!isValidCPF(cpfContribuinte) || !isValidCPF(cpfDependente)) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("error", "CPF inválido na URL"));
+        // Validações de CPF para contribuinte e dependente
+        if (!isValidCPF(cpfContribuinte) || !isValidCPF(cpfDependente)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "CPF inválido na URL"));
+        }
+
+        if (dependente.getCPF() != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Alteração não é permitida"));
+        }
+
+        try {
+            // Atualiza o dependente
+            contribuintesService.updateDependente(cpfContribuinte, cpfDependente, dependente);
+
+            // Retorna apenas a mensagem de sucesso
+            return ResponseEntity.ok(Map.of("message", "Dados do dependente atualizados com sucesso"));
+
+        } catch (IllegalArgumentException e) {
+            // Lida com erros conhecidos
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "CPF não encontrado"));
+        } catch (Exception e) {
+            // Lida com exceções inesperadas
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Erro ao atualizar o dependente"));
+        }
     }
-    
-    if (dependente.getCPF() != null) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("error", "Alteração não é permitida"));
-    }
-
-    try {
-        // Atualiza o dependente
-        contribuintesService.updateDependente(cpfContribuinte, cpfDependente, dependente);
-
-        // Retorna apenas a mensagem de sucesso
-        return ResponseEntity.ok(Map.of("message", "Dados do dependente atualizados com sucesso"));
-
-    } catch (IllegalArgumentException e) {
-        // Lida com erros conhecidos
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", e.getMessage()));
-    } catch (Exception e) {
-        // Lida com exceções inesperadas
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Erro ao atualizar o dependente"));
-    }
-}
 
     // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
@@ -269,7 +268,7 @@ public class ContribuintesController {
     public ResponseEntity<Map<String, Object>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
         // Verifica se o CPF fornecido é válido
         if (!isValidCPF(cpf)) {
-            Map<String, Object> error = Map.of("error", "CPF fornecido é inválido");
+            Map<String, Object> error = Map.of("error", "CPF fornecido na url é inválido");
             return ResponseEntity.badRequest().body(error);
         }
 
@@ -301,15 +300,9 @@ public class ContribuintesController {
     @PostMapping("/{cpf}/dependentes")
     public ResponseEntity<Map<String, Object>> addDependente(@PathVariable String cpf,
             @RequestBody Dependentes dependente) {
-        // Verifica se o CPF fornecido é válido
-        if (!isValidCPF(cpf)) {
-            Map<String, Object> error = Map.of("error", "CPF fornecido na url é inválido");
-            return ResponseEntity.badRequest().body(error);
-        }
-
         // Verifica se o CPF fornecido do contribuinte é válido
         if (!isValidCPF(cpf)) {
-            Map<String, Object> error = Map.of("error", "CPF do contribuinte fornecido é inválido");
+            Map<String, Object> error = Map.of("error", "CPF fornecido na url é inválido");
             return ResponseEntity.badRequest().body(error);
         }
 
