@@ -116,7 +116,7 @@ public class ContribuintesController {
     public ResponseEntity<?> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
         // Verifica se o campo "CPF" no corpo da requisição é diferente do CPF da URL
         if (contribuintes.getCPF() != null && !contribuintes.getCPF().equals(cpf)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Parâmetro CPF indevido"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "ALteração não permitida"));
         }
 
         // Verifica se o CPF é válido
