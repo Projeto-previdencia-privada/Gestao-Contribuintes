@@ -2,57 +2,32 @@ package br.com.gestao_contribuintes.gestaocontribuintes.DTO;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FamiliaDTO {
     private String nomeCivilPrincipal;
     private String cpfPrincipal;
     private String conjugeNomeCivil;
     private String conjugeCPF;
-    private String nomeCivilPai;
-    private String cpfPai;
-    private String nomeCivilMae;
-    private String cpfMae;
-    private String nomeCivilAvoPaterno;
-    private String cpfAvoPaterno;
-    private String nomeCivilAvóPaterno; // Renomeado
-    private String cpfAvóPaterno; // Renomeado
-    private String nomeCivilAvoMaterno;
-    private String cpfAvoMaterno;
-    private String nomeCivilAvóMaterno; // Renomeado
-    private String cpfAvóMaterno; // Renomeado
+    private List<PaisDTO> pais;
+    private List<AvoDTO> avos;
     private List<DependentesDTO> dependentes;
 
-    public String getNomeCivilAvoMaterno() {
-        return nomeCivilAvoMaterno;
+    public List<PaisDTO> getPais() {
+        return pais;
     }
 
-    public void setNomeCivilAvoMaterno(String nomeCivilAvoMaterno) {
-        this.nomeCivilAvoMaterno = nomeCivilAvoMaterno;
+    public void setPais(List<PaisDTO> pais) {
+        this.pais = pais;
     }
 
-    public String getCpfAvoMaterno() {
-        return cpfAvoMaterno;
+    public List<AvoDTO> getAvos() {
+        return avos;
     }
 
-    public void setCpfAvoMaterno(String cpfAvoMaterno) {
-        this.cpfAvoMaterno = cpfAvoMaterno;
-    }
-
-    public String getNomeCivilAvóMaterno() {
-        return nomeCivilAvóMaterno;
-    }
-
-    public void setNomeCivilAvóMaterno(String nomeCivilAvóMaterno) {
-        this.nomeCivilAvóMaterno = nomeCivilAvóMaterno;
-    }
-
-    public String getCpfAvóMaterno() {
-        return cpfAvóMaterno;
-    }
-
-    public void setCpfAvóMaterno(String cpfAvóMaterno) {
-        this.cpfAvóMaterno = cpfAvóMaterno;
+    public void setAvos(List<AvoDTO> avos) {
+        this.avos = avos;
     }
 
     public String getNomeCivilPrincipal() {
@@ -85,70 +60,6 @@ public class FamiliaDTO {
 
     public void setConjugeCPF(String conjugeCPF) {
         this.conjugeCPF = conjugeCPF;
-    }
-
-    public String getNomeCivilPai() {
-        return nomeCivilPai;
-    }
-
-    public void setNomeCivilPai(String nomeCivilPai) {
-        this.nomeCivilPai = nomeCivilPai;
-    }
-
-    public String getCpfPai() {
-        return cpfPai;
-    }
-
-    public void setCpfPai(String cpfPai) {
-        this.cpfPai = cpfPai;
-    }
-
-    public String getNomeCivilMae() {
-        return nomeCivilMae;
-    }
-
-    public void setNomeCivilMae(String nomeCivilMae) {
-        this.nomeCivilMae = nomeCivilMae;
-    }
-
-    public String getCpfMae() {
-        return cpfMae;
-    }
-
-    public void setCpfMae(String cpfMae) {
-        this.cpfMae = cpfMae;
-    }
-
-    public String getNomeCivilAvoPaterno() {
-        return nomeCivilAvoPaterno;
-    }
-
-    public void setNomeCivilAvoPaterno(String nomeCivilAvoPaterno) {
-        this.nomeCivilAvoPaterno = nomeCivilAvoPaterno;
-    }
-
-    public String getCpfAvoPaterno() {
-        return cpfAvoPaterno;
-    }
-
-    public void setCpfAvoPaterno(String cpfAvoPaterno) {
-        this.cpfAvoPaterno = cpfAvoPaterno;
-    }
-
-    public String getNomeCivilAvóPaterno() {
-        return nomeCivilAvóPaterno;
-    }
-
-    public void setNomeCivilAvóPaterno(String nomeCivilAvóPaterno) {
-        this.nomeCivilAvóPaterno = nomeCivilAvóPaterno;
-    }
-
-    public String getCpfAvóPaterno() {
-        return cpfAvóPaterno;
-    }
-
-    public void setCpfAvóPaterno(String cpfAvóPaterno) {
-        this.cpfAvóPaterno = cpfAvóPaterno;
     }
 
     public List<DependentesDTO> getDependentes() {

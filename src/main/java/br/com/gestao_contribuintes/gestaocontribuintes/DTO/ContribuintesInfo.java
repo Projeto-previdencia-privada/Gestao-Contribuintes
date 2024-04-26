@@ -10,6 +10,7 @@ import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
 public class ContribuintesInfo {
 
     private String CPF;
+    
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate inicioContribuicao;
     private BigDecimal salario;

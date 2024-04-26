@@ -3,6 +3,7 @@ package br.com.gestao_contribuintes.gestaocontribuintes.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 //import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -24,7 +25,7 @@ import java.util.List;
 @Entity
 @Table(name = "contribuintes")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "cpf")
-//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Contribuintes {
 
     @Id
@@ -32,7 +33,6 @@ public class Contribuintes {
     @NotBlank(message = "O campo CPF não pode estar vazio")
     @Size(min = 11, max = 11)
     private String CPF;
-
     private String nomeCivil;
     private String nomeSocial;
     private String endereco;
@@ -41,24 +41,40 @@ public class Contribuintes {
     private String categoria;
     private String telefone;
 
-    // Adicionado para representar a data de início de contribuição
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate inicioContribuicao;
-
-    //private String tipoRelacionamento;
     private String cpfPai;
-    private String cpfMae;
     private String cpfPai2;
+    private String cpfPai3;
+    private String cpfMae;
     private String cpfMae2;
+    private String cpfMae3;
+    private String cpfConjuge;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
     private List<Dependentes> dependentes;
-
-    private String cpfConjuge;
-
+    
+    
+    
+    
     // Getters e Setters
+    public String getCpfPai3() {
+        return cpfPai3;
+    }
 
+    public void setCpfPai3(String cpfPai3) {
+        this.cpfPai3 = cpfPai3;
+    }
+
+    public String getCpfMae3() {
+        return cpfMae3;
+    }
+
+    public void setCpfMae3(String cpfMae3) {
+        this.cpfMae3 = cpfMae3;
+    }
+    
     public String getCpfPai2() {
         return cpfPai2;
     }
@@ -82,22 +98,16 @@ public class Contribuintes {
     public void setCpfConjuge(String cpfConjuge) {
         this.cpfConjuge = cpfConjuge;
     }
+
     @JsonIgnore
     public List<Dependentes> getDependentes() {
         return dependentes;
     }
+
     @JsonIgnore
     public void setDependentes(List<Dependentes> dependentes) {
         this.dependentes = dependentes;
     }
-    /*@JsonIgnore
-    public String getTipoRelacionamento() {
-        return tipoRelacionamento;
-    }
-    @JsonIgnore
-    public void setTipoRelacionamento(String tipoRelacionamento) {
-        this.tipoRelacionamento = tipoRelacionamento;
-    }*/
 
     public String getCpfPai() {
         return cpfPai;
