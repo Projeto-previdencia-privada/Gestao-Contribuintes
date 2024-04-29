@@ -13,7 +13,6 @@ public class AvoDTO {
     private String nomeCivilAvoMaterno2;
     private String cpfAvoMaterno2;
 
-    // Getters e setters para avôs paternos
     public String getNomeCivilAvoPaterno() {
         return nomeCivilAvoPaterno;
     }
