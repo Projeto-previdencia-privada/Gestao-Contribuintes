@@ -1,11 +1,13 @@
 package br.com.gestao_contribuintes.gestaocontribuintes.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-//import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.AvoDTO;
@@ -22,7 +24,6 @@ import jakarta.transaction.Transactional;
 public class ContribuintesService {
     private final ContribuintesRepository contribuintesRepository;
 
-    //@Autowired
     public ContribuintesService(ContribuintesRepository contribuintesRepository) {
         this.contribuintesRepository = contribuintesRepository;
     }
@@ -350,123 +351,167 @@ public class ContribuintesService {
 
     // Função para adicionar pais ao PaisDTO, lidando com pais/mães adicionais
     private void adicionarPais(List<PaisDTO> paisDTOs, Contribuintes contribuintePrincipal) {
-        PaisDTO paisDTO = new PaisDTO();
-
-        // Preencher pai e mãe principais
         if (contribuintePrincipal.getCpfPai() != null) {
             Contribuintes pai = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfPai());
             if (pai != null) {
-                paisDTO.setNomeCivilPai(pai.getNomeCivil());
-                paisDTO.setCpfPai(pai.getCPF());
+                PaisDTO paisDTO = new PaisDTO();
+                paisDTO.setNomeCivil(pai.getNomeCivil());
+                paisDTO.setCpf(pai.getCPF());
+                paisDTOs.add(paisDTO);
+            }
+        }
+
+        if (contribuintePrincipal.getCpfPai2() != null) {
+            Contribuintes pai2 = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfPai2());
+            if (pai2 != null) {
+                PaisDTO paisDTO = new PaisDTO();
+                paisDTO.setNomeCivil(pai2.getNomeCivil());
+                paisDTO.setCpf(pai2.getCPF());
+                paisDTOs.add(paisDTO);
+            }
+        }
+
+        if (contribuintePrincipal.getCpfPai3() != null) {
+            Contribuintes pai3 = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfPai3());
+            if (pai3 != null) {
+                PaisDTO paisDTO = new PaisDTO();
+                paisDTO.setNomeCivil(pai3.getNomeCivil());
+                paisDTO.setCpf(pai3.getCPF());
+                paisDTOs.add(paisDTO);
             }
         }
 
         if (contribuintePrincipal.getCpfMae() != null) {
             Contribuintes mae = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfMae());
             if (mae != null) {
-                paisDTO.setNomeCivilMae(mae.getNomeCivil());
-                paisDTO.setCpfMae(mae.getCPF());
-            }
-        }
-
-        // Preencher pais/mães adicionais
-        if (contribuintePrincipal.getCpfPai2() != null) {
-            Contribuintes pai2 = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfPai2());
-            if (pai2 != null) {
-                paisDTO.setNomeCivilPai2(pai2.getNomeCivil());
-                paisDTO.setCpfPai2(pai2.getCPF());
+                PaisDTO paisDTO = new PaisDTO();
+                paisDTO.setNomeCivil(mae.getNomeCivil());
+                paisDTO.setCpf(mae.getCPF());
+                paisDTOs.add(paisDTO);
             }
         }
 
         if (contribuintePrincipal.getCpfMae2() != null) {
             Contribuintes mae2 = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfMae2());
             if (mae2 != null) {
-                paisDTO.setNomeCivilMae2(mae2.getNomeCivil());
-                paisDTO.setCpfMae2(mae2.getCPF());
-            }
-        }
-
-        // Preencher pais/mães adicionais
-        if (contribuintePrincipal.getCpfPai3() != null) {
-            Contribuintes pai3 = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfPai3());
-            if (pai3 != null) {
-                paisDTO.setNomeCivilPai2(pai3.getNomeCivil());
-                paisDTO.setCpfPai2(pai3.getCPF());
+                PaisDTO paisDTO = new PaisDTO();
+                paisDTO.setNomeCivil(mae2.getNomeCivil());
+                paisDTO.setCpf(mae2.getCPF());
+                paisDTOs.add(paisDTO);
             }
         }
 
         if (contribuintePrincipal.getCpfMae3() != null) {
             Contribuintes mae3 = contribuintesRepository.findByCPF(contribuintePrincipal.getCpfMae3());
             if (mae3 != null) {
-                paisDTO.setNomeCivilMae2(mae3.getNomeCivil());
-                paisDTO.setCpfMae2(mae3.getCPF());
+                PaisDTO paisDTO = new PaisDTO();
+                paisDTO.setNomeCivil(mae3.getNomeCivil());
+                paisDTO.setCpf(mae3.getCPF());
+                paisDTOs.add(paisDTO);
             }
-
         }
-        paisDTOs.add(paisDTO);
     }
 
-    // Função para adicionar avôs paternos ao AvoDTO
-    private void adicionarAvosPaternos(AvoDTO avoDTO, Contribuintes pai) {
+    private void adicionarAvosPaternos(List<AvoDTO> avosDTOs, Contribuintes pai) {
         if (pai != null) {
+            Set<String> cpfsAdicionados = new HashSet<>();
+
             // Primeiro avô paterno
             if (pai.getCpfPai() != null) {
                 Contribuintes avoPaterno = contribuintesRepository.findByCPF(pai.getCpfPai());
-                if (avoPaterno != null) {
-                    avoDTO.setNomeCivilAvoPaterno(avoPaterno.getNomeCivil());
-                    avoDTO.setCpfAvoPaterno(avoPaterno.getCPF());
+                if (avoPaterno != null && !cpfsAdicionados.contains(avoPaterno.getCPF())) {
+                    AvoDTO avoDTO = new AvoDTO();
+                    avoDTO.setNomeCivil(avoPaterno.getNomeCivil());
+                    avoDTO.setCpf(avoPaterno.getCPF());
+                    avosDTOs.add(avoDTO);
+                    cpfsAdicionados.add(avoPaterno.getCPF());
                 }
             }
 
-            // Segundo avô paterno (se existir)
+            // Segundo avô paterno, se existir
             if (pai.getCpfPai2() != null) {
                 Contribuintes avoPaterno2 = contribuintesRepository.findByCPF(pai.getCpfPai2());
-                if (avoPaterno2 != null) {
-                    avoDTO.setNomeCivilAvoPaterno2(avoPaterno2.getNomeCivil());
-                    avoDTO.setCpfAvoPaterno2(avoPaterno2.getCPF());
+                if (avoPaterno2 != null && !cpfsAdicionados.contains(avoPaterno2.getCPF())) {
+                    AvoDTO avoDTO = new AvoDTO();
+                    avoDTO.setNomeCivil(avoPaterno2.getNomeCivil());
+                    avoDTO.setCpf(avoPaterno2.getCPF());
+                    avosDTOs.add(avoDTO);
+                    cpfsAdicionados.add(avoPaterno2.getCPF());
+                }
+            }
+
+            // Tecceiro avô paterno, se existir
+            if (pai.getCpfPai3() != null) {
+                Contribuintes avoPaterno3 = contribuintesRepository.findByCPF(pai.getCpfPai3());
+                if (avoPaterno3 != null && !cpfsAdicionados.contains(avoPaterno3.getCPF())) {
+                    AvoDTO avoDTO = new AvoDTO();
+                    avoDTO.setNomeCivil(avoPaterno3.getNomeCivil());
+                    avoDTO.setCpf(avoPaterno3.getCPF());
+                    avosDTOs.add(avoDTO);
+                    cpfsAdicionados.add(avoPaterno3.getCPF());
                 }
             }
         }
     }
 
-    // Função para adicionar avôs maternos ao AvoDTO
-    private void adicionarAvosMaternos(AvoDTO avoDTO, Contribuintes mae) {
+    private void adicionarAvosMaternos(List<AvoDTO> avosDTOs, Contribuintes mae) {
         if (mae != null) {
+            Set<String> cpfsAdicionados = new HashSet<>();
+
             // Primeiro avô materno
             if (mae.getCpfMae() != null) {
                 Contribuintes avoMaterno = contribuintesRepository.findByCPF(mae.getCpfMae());
-                if (avoMaterno != null) {
-                    avoDTO.setNomeCivilAvoMaterno(avoMaterno.getNomeCivil());
-                    avoDTO.setCpfAvoMaterno(avoMaterno.getCPF());
+                if (avoMaterno != null && !cpfsAdicionados.contains(avoMaterno.getCPF())) {
+                    AvoDTO avoDTO = new AvoDTO();
+                    avoDTO.setNomeCivil(avoMaterno.getNomeCivil());
+                    avoDTO.setCpf(avoMaterno.getCPF());
+                    avosDTOs.add(avoDTO);
+                    cpfsAdicionados.add(avoMaterno.getCPF());
                 }
             }
 
-            // Segundo avô materno (se existir)
+            // Segundo avô materno
             if (mae.getCpfMae2() != null) {
                 Contribuintes avoMaterno2 = contribuintesRepository.findByCPF(mae.getCpfMae2());
-                if (avoMaterno2 != null) {
-                    avoDTO.setNomeCivilAvoMaterno2(avoMaterno2.getNomeCivil());
-                    avoDTO.setCpfAvoMaterno2(avoMaterno2.getCPF());
+                if (avoMaterno2 != null && !cpfsAdicionados.contains(avoMaterno2.getCPF())) {
+                    AvoDTO avoDTO = new AvoDTO();
+                    avoDTO.setNomeCivil(avoMaterno2.getNomeCivil());
+                    avoDTO.setCpf(avoMaterno2.getCPF());
+                    avosDTOs.add(avoDTO);
+                    cpfsAdicionados.add(avoMaterno2.getCPF());
+                }
+            }
+
+            // Terceiro avô materno
+            if (mae.getCpfMae2() != null) {
+                Contribuintes avoMaterno3 = contribuintesRepository.findByCPF(mae.getCpfMae3());
+                if (avoMaterno3 != null && !cpfsAdicionados.contains(avoMaterno3.getCPF())) {
+                    AvoDTO avoDTO = new AvoDTO();
+                    avoDTO.setNomeCivil(avoMaterno3.getNomeCivil());
+                    avoDTO.setCpf(avoMaterno3.getCPF());
+                    avosDTOs.add(avoDTO);
+                    cpfsAdicionados.add(avoMaterno3.getCPF());
                 }
             }
         }
     }
 
-     // Função para adicionar avós ao AvosDTO
+    // Função para adicionar avós ao AvosDTO
     private void adicionarAvos(List<AvoDTO> avosDTOs, String cpfPaiOuMae) {
         if (cpfPaiOuMae != null) {
             Contribuintes paiOuMae = contribuintesRepository.findByCPF(cpfPaiOuMae);
             if (paiOuMae != null) {
-                AvoDTO avoDTO = new AvoDTO();
+                // Lista para armazenar os avôs e evitar duplicidade
+                List<AvoDTO> novosAvos = new ArrayList<>();
 
-                // Adicionar avôs paternos
-                adicionarAvosPaternos(avoDTO, paiOuMae);
+                // Adiciona os avôs paternos e maternos
+                adicionarAvosPaternos(novosAvos, paiOuMae);
+                adicionarAvosMaternos(novosAvos, paiOuMae);
 
-                // Adicionar avôs maternos
-                adicionarAvosMaternos(avoDTO, paiOuMae);
-
-                avosDTOs.add(avoDTO);
+                // Adiciona os novos avôs à lista principal
+                avosDTOs.addAll(novosAvos);
             }
         }
     }
+
 }

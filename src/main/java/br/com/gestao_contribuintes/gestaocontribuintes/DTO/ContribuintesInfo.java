@@ -15,7 +15,7 @@ public class ContribuintesInfo {
     private LocalDate inicioContribuicao;
     private BigDecimal salario;
     private String categoria;
-
+    
     public ContribuintesInfo(Contribuintes contribuinte) {
         this.CPF = contribuinte.getCPF();
         this.salario = contribuinte.getSalario();

@@ -4,10 +4,14 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FamiliaDTO {
+    @Schema(description = "Nome do contribuinte", example = "Nome", required = true)
     private String nomeCivilPrincipal;
     private String cpfPrincipal;
+    @Schema(description = "Nome do contribuinte", example = "Nome", required = true)
     private String conjugeNomeCivil;
     private String conjugeCPF;
     private List<PaisDTO> pais;

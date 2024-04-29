@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//import br.com.caelum.stella.validation.CPFValidator;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.ContribuintesInfo;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
@@ -178,7 +177,6 @@ public class ContribuintesController {
         }
     }
 
-    // Exclui o registro de um contribuinte
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable("cpf") String cpf) {
         // Verifica se o CPF fornecido é válido
@@ -192,7 +190,6 @@ public class ContribuintesController {
                 Map<String, Object> success = Map.of("message", "Contribuinte excluído com sucesso");
                 return ResponseEntity.ok(success);
             } else {
-                // Se o contribuinte não foi encontrado, retorna uma resposta adequada
                 Map<String, Object> notFound = Map.of("error", "CPF não encontrado");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFound);
             }
@@ -320,7 +317,7 @@ public class ContribuintesController {
 
         try {
             contribuintesService.addDependente(cpf, dependente);
-            Map<String, Object> success = Map.of("message", "Dependente vinculado ao CPF: " + cpf);
+            Map<String, Object> success = Map.of("message", "Dependente vinculado com sucesso ao CPF: " + cpf);
             return ResponseEntity.status(HttpStatus.CREATED).body(success);
 
         } catch (Exception e) {
