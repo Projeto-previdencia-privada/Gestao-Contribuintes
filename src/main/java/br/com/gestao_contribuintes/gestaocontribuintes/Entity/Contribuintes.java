@@ -56,8 +56,6 @@ public class Contribuintes {
     private List<Dependentes> dependentes;
     
     
-    
-    
     // Getters e Setters
     public String getCpfPai3() {
         return cpfPai3;
