@@ -8,6 +8,7 @@ br\com\gestao_contribuintes\gestaocontribuintes\Repository\ContribuintesReposito
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\TipoRelacionamento.class
 br\com\gestao_contribuintes\gestaocontribuintes\DTO\ContribuintesInfo.class
 br\com\gestao_contribuintes\gestaocontribuintes\Service\ContribuintesService.class
+br\com\gestao_contribuintes\gestaocontribuintes\Configurações\SwaggerConfig.class
 br\com\gestao_contribuintes\gestaocontribuintes\DTO\AvoDTO.class
 br\com\gestao_contribuintes\gestaocontribuintes\DTO\FamiliaDTO.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Relacionamento.class

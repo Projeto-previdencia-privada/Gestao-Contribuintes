@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.ContribuintesInfo;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
@@ -38,7 +39,7 @@ public class ContribuintesController {
         this.contribuintesRepository = contribuintesRepository;
     }
 
-    // Cria o registro de um contribuinte
+    @Operation(summary = "Registra Contribuinte", description = "Cria o registro de um contribuinte", tags = "Contribuintes" )
     @PostMapping
     public ResponseEntity<Map<String, String>> create(@RequestBody Contribuintes contribuintes) {
         // Verifica se o CPF está preenchido
@@ -64,14 +65,14 @@ public class ContribuintesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Contribuinte registrado com sucesso"));
     }
 
-    // Busca uma lista de contribuintes
+    @Operation(summary = "Lista Contribuintes", description = "Busca uma lista de contribuintes", tags = "Contribuintes" )
     @GetMapping
     public ResponseEntity<List<Contribuintes>> list() {
         List<Contribuintes> contribuintesList = contribuintesService.getAllContribuintes();
         return ResponseEntity.ok(contribuintesList);
     }
 
-    // Busca a informação do contribuinte
+    @Operation(summary = "Informação", description = "Busca informações referente a contribuição do contribuinte", tags = "Contribuintes" )
     @GetMapping("/{cpf}")
     public ResponseEntity<Map<String, Object>> getContribuinteByCPF(@PathVariable String cpf) {
         // Verifica se o CPF fornecido é válido
@@ -116,7 +117,7 @@ public class ContribuintesController {
         return true;
     }
 
-    // Atualiza as informações do contribuinte
+    @Operation(summary = "Atualiza Contribuinte", description = "Atualiza as informações do contribuinte", tags = "Contribuintes" )
     @PutMapping("/{cpf}")
     public ResponseEntity<?> update(@PathVariable String cpf, @RequestBody Contribuintes contribuintes) {
         // IMPEDE DO CPF DE SER ATUALIZADO
@@ -143,6 +144,7 @@ public class ContribuintesController {
         }
     }
 
+    @Operation(summary = "Atualiza Dependente", description = "Atualiza as informações do dependente", tags = "Dependentes" )
     @PutMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
     public ResponseEntity<Map<String, Object>> updateDependente(
             @PathVariable String cpfContribuinte,
@@ -177,6 +179,7 @@ public class ContribuintesController {
         }
     }
 
+    @Operation(summary = "Exclui Contribuinte", description = "Exclui o registro de um contribuinte", tags = "Contribuintes" )
     @DeleteMapping("/{cpf}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable("cpf") String cpf) {
         // Verifica se o CPF fornecido é válido
@@ -201,7 +204,7 @@ public class ContribuintesController {
         }
     }
 
-    // Exclui um dependente
+    @Operation(summary = "Exclui Dependente", description = "Desvincula o dependente de um contribuinte", tags = "Dependentes" )
     @DeleteMapping("/dependentes/{cpfContribuinte}/{cpfDependente}")
     public ResponseEntity<Map<String, Object>> deleteDependente(
             @PathVariable String cpfContribuinte,
@@ -237,7 +240,7 @@ public class ContribuintesController {
         }
     }
 
-    // Traz a família de um contribuinte
+    @Operation(summary = "Lista Familia", description = "Lista os familiares de um contribuinte", tags = "Família" )
     @GetMapping("/familia/{cpf}")
     public ResponseEntity<Map<String, Object>> getFamiliaByContribuinteCPF(@PathVariable String cpf) {
         // Verifica se o CPF fornecido é válido
@@ -260,7 +263,7 @@ public class ContribuintesController {
         return ResponseEntity.ok(success);
     }
 
-    // Traz a lista de dependentes de um contribuinte
+    @Operation(summary = "Lista Dependente", description = "Lista os dependentes de um contribuinte", tags = "Dependentes" )
     @GetMapping("/{cpf}/dependentes")
     public ResponseEntity<Map<String, Object>> getDependentesByContribuinteCPF(@PathVariable String cpf) {
         // Verifica se o CPF fornecido é válido
@@ -293,7 +296,7 @@ public class ContribuintesController {
         }
     }
 
-    // Vincula um dependente a um contribuinte
+    @Operation(summary = "Registra Dependente", description = "Vincula um dependente a um contribuinte", tags = "Dependentes" )
     @PostMapping("/{cpf}/dependentes")
     public ResponseEntity<Map<String, Object>> addDependente(@PathVariable String cpf, @RequestBody Dependentes dependente) {
         // Verifica se o CPF do contribuinte é válido

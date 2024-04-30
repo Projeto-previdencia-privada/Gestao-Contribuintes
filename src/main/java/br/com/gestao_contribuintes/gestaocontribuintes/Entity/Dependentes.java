@@ -26,8 +26,6 @@ public class Dependentes {
     @ManyToOne
     private Contribuintes responsavel;
 
-    private TipoRelacionamento tipoRelacionamento;
-
     public List<Contribuintes> getContribuintes() {
         return contribuintes;
     }
@@ -50,14 +48,6 @@ public class Dependentes {
 
     public void setnomeCivil(String nomeCivil) {
         this.nomeCivil = nomeCivil;
-    }
-
-    public TipoRelacionamento getTipoRelacionamento() {
-        return tipoRelacionamento;
-    }
-
-    public void setTipoRelacionamento(TipoRelacionamento tipoRelacionamento) {
-        this.tipoRelacionamento = tipoRelacionamento;
     }
 
     public Contribuintes getResponsavel() {
