@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.ContribuintesInfo;
+import br.com.gestao_contribuintes.gestaocontribuintes.DTO.CadastroContribuintesDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.DependentesDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.DTO.FamiliaDTO;
 import br.com.gestao_contribuintes.gestaocontribuintes.Entity.Contribuintes;
@@ -89,6 +90,33 @@ public class ContribuintesController {
             Contribuintes contribuinte = contribuinteOptional.get();
             ContribuintesInfo contribuintesInfo = new ContribuintesInfo(contribuinte);
             Map<String, Object> success = Map.of("info", contribuintesInfo);
+            return ResponseEntity.ok(success);
+        } else {
+            // Se o contribuinte não foi encontrado, retorna uma resposta adequada
+            Map<String, Object> notFound = Map.of("error", "CPF não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFound);
+        }
+
+    }
+
+    
+    @Operation(summary = "Cadastro", description = "Busca informações referente ao cadastro do contribuinte", tags = "CadastroContribuintes" )
+    @GetMapping("/cadastroAtualizacao/{cpf}")
+    public ResponseEntity<Map<String, Object>> getContribuinteAtualizaCadByCPF(@PathVariable String cpf) {
+        // Verifica se o CPF fornecido é válido
+        if (!isValidCPF(cpf)) {
+            Map<String, Object> error = Map.of("error", "CPF fornecido é inválido");
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        // Tenta recuperar o contribuinte pelo CPF
+        Optional<Contribuintes> contribuinteOptional = contribuintesService.getContribuinteByCPF(cpf);
+
+        // Verifica se o contribuinte foi encontrado
+        if (contribuinteOptional.isPresent()) {
+            Contribuintes contribuinte = contribuinteOptional.get();
+            CadastroContribuintesDTO CadastroContribuintesDTO = new CadastroContribuintesDTO(contribuinte);
+            Map<String, Object> success = Map.of("info", CadastroContribuintesDTO);
             return ResponseEntity.ok(success);
         } else {
             // Se o contribuinte não foi encontrado, retorna uma resposta adequada
