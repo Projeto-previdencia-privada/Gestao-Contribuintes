@@ -360,6 +360,34 @@ public class ContribuintesController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(conflict);
         }
     }
+
+    @Operation(summary = "Ativar Contribuinte", description = "Ativa o registro de um contribuinte", tags = "Contribuintes")
+    @PutMapping("/{cpf}/ativar")
+    public ResponseEntity<Map<String, Object>> ativarContribuinte(@PathVariable String cpf) {
+        Optional<Contribuintes> contribuinteOptional = contribuintesService.getContribuinteByCPF(cpf);
+        if (contribuinteOptional.isPresent()) {
+            contribuintesService.ativarContribuinte(cpf);
+            Map<String, Object> success = Map.of("message", "Contribuinte ativado com sucesso");
+            return ResponseEntity.ok(success);
+        } else {
+            Map<String, Object> notFound = Map.of("error", "CPF não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFound);
+        }
+    }
+
+    @Operation(summary = "Inativar Contribuinte", description = "Inativa o registro de um contribuinte", tags = "Contribuintes")
+    @PutMapping("/{cpf}/inativar")
+    public ResponseEntity<Map<String, Object>> inativarContribuinte(@PathVariable String cpf) {
+        Optional<Contribuintes> contribuinteOptional = contribuintesService.getContribuinteByCPF(cpf);
+        if (contribuinteOptional.isPresent()) {
+            contribuintesService.inativarContribuinte(cpf);
+            Map<String, Object> success = Map.of("message", "Contribuinte inativado com sucesso");
+            return ResponseEntity.ok(success);
+        } else {
+            Map<String, Object> notFound = Map.of("error", "CPF não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFound);
+        }
+    }
     
 
 }

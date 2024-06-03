@@ -514,4 +514,28 @@ public class ContribuintesService {
         }
     }
 
+    // Método para ativar um contribuinte
+    public Contribuintes ativarContribuinte(String cpf) {
+        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
+        if (contribuinteOptional.isPresent()) {
+            Contribuintes contribuinte = contribuinteOptional.get();
+            contribuinte.setAtivo(true);
+            return contribuintesRepository.save(contribuinte);
+        } else {
+            throw new IllegalArgumentException("Contribuinte com CPF " + cpf + " não encontrado.");
+        }
+    }
+
+    // Método para inativar um contribuinte
+    public Contribuintes inativarContribuinte(String cpf) {
+        Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
+        if (contribuinteOptional.isPresent()) {
+            Contribuintes contribuinte = contribuinteOptional.get();
+            contribuinte.setAtivo(false);
+            return contribuintesRepository.save(contribuinte);
+        } else {
+            throw new IllegalArgumentException("Contribuinte com CPF " + cpf + " não encontrado.");
+        }
+    }
+
 }
