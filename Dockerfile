@@ -1,10 +1,20 @@
 # Use a imagem base com o Java 17 Alpine
 FROM openjdk:17-alpine
 
-# Definir argumento com o caminho do arquivo .jar
-ARG JAR_FILE=target/gestao-contribuintes-0.0.1-SNAPSHOT.jar
+# Definir diretório de trabalho
+WORKDIR /app
 
-# Copiar o arquivo .jar para o container
-COPY ${JAR_FILE} app.jar
+# Copiar arquivos necessários para o diretório de trabalho do contêiner
+COPY . .
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Garantir que o script Maven Wrapper tenha permissões de execução
+RUN chmod +x mvnw
+
+# Executar Maven Wrapper para limpar e empacotar o projeto, criando o arquivo JAR
+RUN ./mvnw clean package -DskipTests
+
+# Copiar o arquivo JAR gerado para o diretório de trabalho do contêiner
+COPY target/gestao-contribuintes-0.0.1-SNAPSHOT.jar app.jar
+
+# Definir ponto de entrada do contêiner para executar o JAR
+ENTRYPOINT ["java", "-jar", "/app.jar"]
