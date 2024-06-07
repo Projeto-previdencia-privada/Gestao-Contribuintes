@@ -4,11 +4,18 @@ FROM openjdk:17-alpine
 # Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar arquivos necessários para o diretório de trabalho do contêiner
-COPY . .
+# Copiar arquivos do Maven Wrapper e do projeto para o diretório de trabalho do contêiner
+COPY .mvn/ .mvn/
+COPY mvnw .
+COPY mvnw.cmd .
+COPY pom.xml .
+COPY src/ src/
 
 # Garantir que o script Maven Wrapper tenha permissões de execução
 RUN chmod +x mvnw
+
+# Listar arquivos no diretório de trabalho para depuração
+RUN ls -la && ls -la .mvn/wrapper/
 
 # Executar Maven Wrapper para limpar e empacotar o projeto, criando o arquivo JAR
 RUN ./mvnw clean package -DskipTests
