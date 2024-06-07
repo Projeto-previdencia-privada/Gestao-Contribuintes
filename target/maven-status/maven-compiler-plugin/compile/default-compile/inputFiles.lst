@@ -6,6 +6,8 @@ C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\DTO\PaisDTO.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\DTO\FamiliaDTO.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Entity\Contribuintes.java
+C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Configurações\WebConfig.java
+C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\DTO\CadastroContribuintesDTO.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Entity\Dependentes.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\Controller\ContribuintesController.java
 C:\Users\fpere\Desktop\Projeto Previdencia Privada\gestao-contribuintes\src\main\java\br\com\gestao_contribuintes\gestaocontribuintes\GestaoContribuintesApplication.java

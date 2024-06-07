@@ -1,3 +1,4 @@
+br\com\gestao_contribuintes\gestaocontribuintes\DTO\CadastroContribuintesDTO.class
 br\com\gestao_contribuintes\gestaocontribuintes\DTO\PaisDTO.class
 br\com\gestao_contribuintes\gestaocontribuintes\Controller\ContribuintesController.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\Contribuintes.class
@@ -7,6 +8,7 @@ br\com\gestao_contribuintes\gestaocontribuintes\GestaoContribuintesApplication.c
 br\com\gestao_contribuintes\gestaocontribuintes\Repository\ContribuintesRepository.class
 br\com\gestao_contribuintes\gestaocontribuintes\Entity\TipoRelacionamento.class
 br\com\gestao_contribuintes\gestaocontribuintes\DTO\ContribuintesInfo.class
+br\com\gestao_contribuintes\gestaocontribuintes\Configurações\WebConfig.class
 br\com\gestao_contribuintes\gestaocontribuintes\Service\ContribuintesService.class
 br\com\gestao_contribuintes\gestaocontribuintes\Configurações\SwaggerConfig.class
 br\com\gestao_contribuintes\gestaocontribuintes\DTO\AvoDTO.class
