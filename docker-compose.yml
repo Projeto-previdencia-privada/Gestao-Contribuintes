@@ -1,29 +1,21 @@
-version: '3.8'
-
 services:
-  db_rpps:
-    container_name: db_rpps
-    image: postgres:16.2
-    environment:
-      POSTGRES_DB: db_rpps
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postsenha
-    ports:
-      - "5434:5432"
-    volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
-      - postgres-data:/var/lib/postgresql/data
-
-  app:
-    build: .
-    depends_on:
-      - db_rpps
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db_rpps:5434/db_rpps
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postsenha
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8081:8080"
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_PORT: ${DB_PORT}
+      APP_PORT: ${APP_PORT}
+    env_file:
+      - .env
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
 volumes:
-  postgres-data:
+  db-data:
