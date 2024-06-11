@@ -19,7 +19,7 @@ services:
     depends_on:
       - db_rpps
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db_rpps:5432/db_rpps
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_rpps:5434/db_rpps
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postsenha
     ports:
