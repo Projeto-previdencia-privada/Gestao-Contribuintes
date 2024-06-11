@@ -1,5 +1,3 @@
-CREATE TABLE IF NOT EXISTS contribuintes;
-
 CREATE TABLE IF NOT EXISTS contribuintes.contribuintes (
     cpf VARCHAR(11) PRIMARY KEY,
     nome_civil VARCHAR(100),
