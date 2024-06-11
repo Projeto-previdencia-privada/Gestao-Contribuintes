@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS contribuintes;
+
 CREATE TABLE IF NOT EXISTS contribuintes.contribuintes (
     cpf VARCHAR(11) PRIMARY KEY,
     nome_civil VARCHAR(100),
@@ -25,14 +27,14 @@ CREATE TABLE IF NOT EXISTS contribuintes.contribuintes_dependentes (
     cpf_contribuinte VARCHAR(11),
     cpf_dependente VARCHAR(11),
     PRIMARY KEY (cpf_contribuinte, cpf_dependente),
-    FOREIGN KEY (cpf_contribuinte) REFERENCES contribuintes(cpf),
-    FOREIGN KEY (cpf_dependente) REFERENCES dependentes(cpf)
+    FOREIGN KEY (cpf_contribuinte) REFERENCES contribuintes.contribuintes(cpf),
+    FOREIGN KEY (cpf_dependente) REFERENCES contribuintes.dependentes(cpf)
 );
 
 CREATE TABLE IF NOT EXISTS contribuintes.contribuintes_conjuges (
     cpf_contribuinte VARCHAR(11),
     cpf_conjuge VARCHAR(11),
     PRIMARY KEY (cpf_contribuinte, cpf_conjuge),
-    FOREIGN KEY (cpf_contribuinte) REFERENCES contribuintes(cpf),
-    FOREIGN KEY (cpf_conjuge) REFERENCES contribuintes(cpf)
+    FOREIGN KEY (cpf_contribuinte) REFERENCES contribuintes.contribuintes(cpf),
+    FOREIGN KEY (cpf_conjuge) REFERENCES contribuintes.contribuintes(cpf)
 );
