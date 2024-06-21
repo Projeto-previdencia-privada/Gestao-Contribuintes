@@ -41,6 +41,8 @@ public class CadastroContribuintesDTO {
     private String cpfMae3;
     
     private String cpfConjuge;
+
+    private Boolean status;
     
     public CadastroContribuintesDTO(Contribuintes contribuinte) {
         this.CPF = contribuinte.getCPF();
@@ -59,6 +61,7 @@ public class CadastroContribuintesDTO {
         this.cpfMae = contribuinte.getCpfMae();
         this.cpfMae2 = contribuinte.getCpfMae2();
         this.cpfMae3 = contribuinte.getCpfMae3();
+        this.status = contribuinte.getStatus();
     }
     
 
@@ -188,6 +191,14 @@ public class CadastroContribuintesDTO {
 
     public void setCpfConjuge(String cpfConjuge) {
         this.cpfConjuge = cpfConjuge;
+    }
+
+    public Boolean getStatus(){
+        return status;
+    }
+
+    public void setStatus(Boolean status){
+        this.status = status;
     }
 
     

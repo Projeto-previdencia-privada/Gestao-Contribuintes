@@ -71,8 +71,8 @@ public class Contribuintes {
     @JoinTable(name = "contribuintes_dependentes", joinColumns = @JoinColumn(name = "cpf_contribuinte"), inverseJoinColumns = @JoinColumn(name = "cpf_dependente"))
     private List<Dependentes> dependentes;
 
-    @Column(name = "ativo")
-    private Boolean ativo;
+    @Column(name = "status")
+    private Boolean status = false;
 
     // Getters e Setters
     public String getCpfPai3() {
@@ -213,12 +213,12 @@ public class Contribuintes {
         this.inicioContribuicao = inicioContribuicao;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
 }

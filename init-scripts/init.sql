@@ -13,7 +13,8 @@ CREATE TABLE contribuintes (
     cpf_mae VARCHAR(11),
     cpf_pai2 VARCHAR(11),
     cpf_mae2 VARCHAR(11),
-    cpf_conjuge VARCHAR(11)
+    cpf_conjuge VARCHAR(11),
+    status BOOLEAN DEFAULT false
 );
 
 -- Criação da tabela de dependente

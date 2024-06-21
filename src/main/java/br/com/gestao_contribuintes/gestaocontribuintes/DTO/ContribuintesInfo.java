@@ -14,12 +14,15 @@ public class ContribuintesInfo {
     private LocalDate inicioContribuicao;
     private BigDecimal salario;
     private String categoria;
+    private Boolean status;
+    
     
     public ContribuintesInfo(Contribuintes contribuinte) {
         this.CPF = contribuinte.getCPF();
         this.salario = contribuinte.getSalario();
         this.inicioContribuicao = contribuinte.getInicioContribuicao();
         this.categoria = contribuinte.getCategoria();
+        this.status = contribuinte.getStatus();
     }
 
     // Getters e Setters
@@ -34,25 +37,32 @@ public class ContribuintesInfo {
     public BigDecimal getSalario() {
         return salario;
     }
-
+    
     public void setSalario(BigDecimal salario) {
         this.salario = salario;
     }
-
+    
     public LocalDate getInicioContribuicao() {
         return inicioContribuicao;
     }
-
+    
     public void setInicioContribuicao(LocalDate inicioContribuicao) {
         this.inicioContribuicao = inicioContribuicao;
     }
-
+    
     public String getCategoria() {
         return categoria;
     }
-
+    
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
-
+    
+    public Boolean getStatus() {
+        return status;
+    }
+    
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 }

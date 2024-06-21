@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS contribuintes.contribuintes (
     cpf_mae VARCHAR(11),
     cpf_pai2 VARCHAR(11),
     cpf_mae2 VARCHAR(11),
-    cpf_conjuge VARCHAR(11)
+    cpf_conjuge VARCHAR(11),
+    status BOOLEAN DEFAULT false
 );
 
 CREATE TABLE IF NOT EXISTS contribuintes.dependentes (

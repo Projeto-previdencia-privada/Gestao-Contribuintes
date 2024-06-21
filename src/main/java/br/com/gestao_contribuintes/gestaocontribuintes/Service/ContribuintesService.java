@@ -91,6 +91,9 @@ public class ContribuintesService {
             if (contribuintes.getCpfMae() != null) {
                 contribuinteExistente.setCpfMae(contribuintes.getCpfMae());
             }
+            if (contribuintes.getStatus() != null) {
+                contribuinteExistente.setStatus(contribuintes.getStatus());
+            }
 
             // Atualiza CPF do cônjuge
             String cpfConjugeAntigo = contribuinteExistente.getCpfConjuge();
@@ -519,7 +522,7 @@ public class ContribuintesService {
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinte = contribuinteOptional.get();
-            contribuinte.setAtivo(true);
+            contribuinte.setStatus(true);
             return contribuintesRepository.save(contribuinte);
         } else {
             throw new IllegalArgumentException("Contribuinte com CPF " + cpf + " não encontrado.");
@@ -531,7 +534,7 @@ public class ContribuintesService {
         Optional<Contribuintes> contribuinteOptional = contribuintesRepository.findById(cpf);
         if (contribuinteOptional.isPresent()) {
             Contribuintes contribuinte = contribuinteOptional.get();
-            contribuinte.setAtivo(false);
+            contribuinte.setStatus(false);
             return contribuintesRepository.save(contribuinte);
         } else {
             throw new IllegalArgumentException("Contribuinte com CPF " + cpf + " não encontrado.");
